@@ -28,7 +28,7 @@ CREATE TABLE `users` (
   `id` int NOT NULL AUTO_INCREMENT,
   `user_name` varchar(45) NOT NULL,
   `password` varchar(4096) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  `userscol` varchar(45) DEFAULT NULL,
+  `PPSN` varchar(45) DEFAULT NULL,
   `email` varchar(45) DEFAULT NULL,
   `address` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`id`),
