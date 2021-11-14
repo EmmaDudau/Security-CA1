@@ -25,6 +25,8 @@ import java.util.Scanner;
  * Related database - userstore (userstore.sql database schema)
  */
 
+//Lab recording: https://studentncirl.sharepoint.com/:v:/r/sites/SecurityFundamentalsandDevelopmentBSHCE3MoodleTeam-21/Shared%20Documents/General/Recordings/View%20Only/Meeting%20in%20_General_-20211028_200546-Meeting%20Recording.mp4?csf=1&web=1&e=Csbejh
+
 public class UserAuth {
     public static void main(String[] args){
             //declare variables
