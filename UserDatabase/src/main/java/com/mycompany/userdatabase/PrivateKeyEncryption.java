@@ -19,11 +19,10 @@ import javax.crypto.spec.SecretKeySpec;
 
 /*
  * PrivateKeyEncryption.java
- * 9th November 2021
+ * 14th November 2021
  * Security Fundamentals and Development CA1 Part 2
  * @authors: Group F - Ruby Lennon (x19128355), Emanuela Dudau (x19180675)
  * Description - AES Symmetric key algorithm (private key), 1 key used to encrypt and decrypt plain text
- * Related database - userstore (userstore.sql database schema)
  */
 
 //Lab recording: https://studentncirl.sharepoint.com/:v:/r/sites/SecurityFundamentalsandDevelopmentBSHCE3MoodleTeam-21/Shared%20Documents/General/Recordings/View%20Only/Meeting%20in%20_General_-20211028_200546-Meeting%20Recording.mp4?csf=1&web=1&e=Csbejh

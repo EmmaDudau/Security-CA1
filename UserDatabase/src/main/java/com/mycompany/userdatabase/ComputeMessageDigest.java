@@ -10,11 +10,10 @@ import java.security.NoSuchAlgorithmException;
 
 /*
  * ComputeMessageDigest.java
- * 9th November 2021
+ * 14th November 2021
  * Security Fundamentals and Development CA1 Part 2
  * @authors: Group F - Ruby Lennon (x19128355), Emanuela Dudau (x19180675)
  * Description - Compare two hash values of two different strings to see if they match
- * Related database - userstore (userstore.sql database schema)
  */
 
 //Lab recording: https://studentncirl.sharepoint.com/:v:/r/sites/SecurityFundamentalsandDevelopmentBSHCE3MoodleTeam-21/Shared%20Documents/General/Recordings/View%20Only/Security%20Fundamentals%20and%20Development_Remote%20Lec-20211021_200815-Meeting%20Recording.mp4?csf=1&web=1&e=wAv0iv
