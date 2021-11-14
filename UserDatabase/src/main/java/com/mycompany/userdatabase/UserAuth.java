@@ -5,6 +5,10 @@
  */
 package com.mycompany.userdatabase;
 
+//imports
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -17,6 +21,8 @@ import java.util.Scanner;
  * 9th November 2021
  * Security Fundamentals and Development CA1 Part 2
  * @authors: Group F - Ruby Lennon (x19128355), Emanuela Dudau (x19180675)
+ * Description - Encrypted (Hash / SHA-1 MessageDigest Algorithm) user creation / login
+ * Related database - userstore (userstore.sql database schema)
  */
 
 public class UserAuth {
@@ -40,24 +46,46 @@ public class UserAuth {
             System.out.println("Please enter password");//get password
             password = scan.nextLine();
             
+            String encryptedPassword = HashPassword(password);//use the HashPassword function to convert the password to Hash and store in new String
+            
             //userchoice switch statement
             switch (userChoice){
                 case "1"://if userchoice equals 1
-                    CreateUser(username, password);//create new user using username and password
+                    CreateUser(username, encryptedPassword);//create new user using username and encrypted password
                     break;
                 case "2"://if userchoice equals 2
-                    CheckUser(username, password);//check if user exists using username and password
+                    CheckUser(username, encryptedPassword);//check if user exists using username and password
                     break;
             }           
         }
-         
+    
+    //method to encrypt password using Hash (SHA-1 MessageDigest Algorithm)
+    public static String HashPassword(String password){
+        MessageDigest sha = null;//Message digests are secure one-way hash functions that take arbitrary-sized data and output a fixed-length hash value
+        try{
+            sha = MessageDigest.getInstance("SHA-1");//SHA-1 MessagDigest Algorithm selected
+        }catch(NoSuchAlgorithmException e){
+            System.out.println("No such algorithm");
+        }
+        
+        byte b[] = password.getBytes();//Get they byte value of password 
+        
+        byte[] hash = sha.digest(b);//byte array used to store the digested password using SHA-1 algorithm
+        
+        String encryptedPassword = new String(hash, StandardCharsets.UTF_8);//converting the hash to a string and storing in encryptedPassword
+        
+        return encryptedPassword;//return encryptedPassword
+        
+    }
+    
+    //method to create a new user in the database
     private static void CreateUser(String username, String password){
         try{            
-            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/userstore", "root", "password");//connect to userstore schema/database on localhost
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/userstore", "root", "RLNCIsqlPass123*");//connect to userstore schema/database on localhost
             String sql = "INSERT INTO users (user_name, password) VALUES (?, ?)";//SQL statement to create new user in users table
             PreparedStatement statement = con.prepareStatement(sql);//prepared statement is more secure than plain statement against SQL injection
-            statement.setString(1, username);
-            statement.setString(2, password);
+            statement.setString(1, username);//set the first statement parameter (?) to the username value
+            statement.setString(2, password);//set the second statement parameter (?) to the password value
             
             statement.executeUpdate();//execute the statement
             
@@ -67,15 +95,16 @@ public class UserAuth {
         }
     }
     
+    //method to check if a user exists in the database
     private static void CheckUser(String username, String password){
         try{            
-            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/userstore", "root", "password");//connect to userstore schema/database on localhost
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/userstore", "root", "RLNCIsqlPass123*");//connect to userstore schema/database on localhost
             String sql = "SELECT * FROM users where user_name = ? and password = ?";
             PreparedStatement statement = con.prepareStatement(sql);//prepared statement is more secure than plain statement against SQL injection
-            statement.setString(1, username);
-            statement.setString(2, password);
+            statement.setString(1, username);//set the first statement parameter (?) to the username value
+            statement.setString(2, password);//set the second statement parameter (?) to the password value
             
-            ResultSet results = statement.executeQuery();
+            ResultSet results = statement.executeQuery();//execute the statement
             
             if(results.next()){
                 System.out.println("You have successfully logged in.");
