@@ -3,7 +3,15 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.mycompany.userdatabase;
+package com.nci.encrypt;
+
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.stream.Collectors;
+import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -29,8 +37,6 @@ public class GUI extends javax.swing.JFrame {
 
         jLabel3 = new javax.swing.JLabel();
         titleLbl = new javax.swing.JLabel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        appTa = new javax.swing.JTextArea();
         applicationTp = new javax.swing.JTabbedPane();
         userLoginPnl = new javax.swing.JPanel();
         loginBtn = new javax.swing.JButton();
@@ -52,12 +58,13 @@ public class GUI extends javax.swing.JFrame {
         printDetailsBtn = new javax.swing.JButton();
         ppsnTf = new javax.swing.JTextField();
         fileReaderWriterPnl = new javax.swing.JPanel();
-        fileTextTf = new javax.swing.JTextField();
         filenameLbl = new javax.swing.JLabel();
         filenameTf = new javax.swing.JTextField();
         writeFileBtn = new javax.swing.JButton();
         readFileBtn = new javax.swing.JButton();
-        txtExtensionLbl = new javax.swing.JLabel();
+        secretKey = new javax.swing.JTextField();
+        jLabel1 = new javax.swing.JLabel();
+        fileTextTf = new java.awt.TextArea();
         fileCheckerPnl = new javax.swing.JPanel();
         fileOnePnl = new javax.swing.JPanel();
         filenameOneTf = new javax.swing.JTextField();
@@ -75,13 +82,6 @@ public class GUI extends javax.swing.JFrame {
 
         titleLbl.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         titleLbl.setText("Application Title Here");
-
-        appTa.setColumns(20);
-        appTa.setRows(5);
-        appTa.setBorder(javax.swing.BorderFactory.createTitledBorder("Message"));
-        jScrollPane1.setViewportView(appTa);
-        appTa.getAccessibleContext().setAccessibleName("Message");
-        appTa.getAccessibleContext().setAccessibleDescription("");
 
         loginBtn.setText("Login");
 
@@ -118,7 +118,7 @@ public class GUI extends javax.swing.JFrame {
                         .addComponent(createUserBtn)
                         .addGap(18, 18, 18)
                         .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(123, Short.MAX_VALUE))
+                .addContainerGap(195, Short.MAX_VALUE))
         );
         userLoginPnlLayout.setVerticalGroup(
             userLoginPnlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -131,7 +131,7 @@ public class GUI extends javax.swing.JFrame {
                 .addGroup(userLoginPnlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel8)
                     .addComponent(jTextField7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 68, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 215, Short.MAX_VALUE)
                 .addGroup(userLoginPnlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(createUserBtn)
                     .addComponent(jButton4)
@@ -193,7 +193,7 @@ public class GUI extends javax.swing.JFrame {
                                 .addComponent(ppsnLbl)
                                 .addGap(18, 18, 18)
                                 .addComponent(ppsnTf, javax.swing.GroupLayout.PREFERRED_SIZE, 302, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                .addContainerGap(158, Short.MAX_VALUE))
+                .addContainerGap(252, Short.MAX_VALUE))
         );
         userDetailsPnlLayout.setVerticalGroup(
             userDetailsPnlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -218,17 +218,10 @@ public class GUI extends javax.swing.JFrame {
                 .addGroup(userDetailsPnlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(updateDetailsBtn)
                     .addComponent(printDetailsBtn))
-                .addContainerGap(26, Short.MAX_VALUE))
+                .addContainerGap(165, Short.MAX_VALUE))
         );
 
         applicationTp.addTab("User Details", userDetailsPnl);
-
-        fileTextTf.setBorder(javax.swing.BorderFactory.createTitledBorder("File Text"));
-        fileTextTf.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                fileTextTfActionPerformed(evt);
-            }
-        });
 
         filenameLbl.setText("Filename:");
 
@@ -238,36 +231,43 @@ public class GUI extends javax.swing.JFrame {
             }
         });
 
-        writeFileBtn.setText("Write To File");
+        writeFileBtn.setText("Encrypt File");
+        writeFileBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                writeFileBtnActionPerformed(evt);
+            }
+        });
 
-        readFileBtn.setText("Read File");
+        readFileBtn.setText("Decrypt File");
+        readFileBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                readFileBtnActionPerformed(evt);
+            }
+        });
 
-        txtExtensionLbl.setText(".txt");
+        jLabel1.setText("Secret Key");
 
         javax.swing.GroupLayout fileReaderWriterPnlLayout = new javax.swing.GroupLayout(fileReaderWriterPnl);
         fileReaderWriterPnl.setLayout(fileReaderWriterPnlLayout);
         fileReaderWriterPnlLayout.setHorizontalGroup(
             fileReaderWriterPnlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(fileReaderWriterPnlLayout.createSequentialGroup()
-                .addGroup(fileReaderWriterPnlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addContainerGap()
+                .addGroup(fileReaderWriterPnlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addGroup(fileReaderWriterPnlLayout.createSequentialGroup()
-                        .addContainerGap()
+                        .addComponent(writeFileBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(readFileBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(fileTextTf, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 682, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, fileReaderWriterPnlLayout.createSequentialGroup()
                         .addComponent(filenameLbl)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(filenameTf, javax.swing.GroupLayout.PREFERRED_SIZE, 229, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtExtensionLbl)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 17, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, fileReaderWriterPnlLayout.createSequentialGroup()
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(writeFileBtn)
-                        .addGap(60, 60, 60)))
-                .addComponent(readFileBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(182, 182, 182))
-            .addGroup(fileReaderWriterPnlLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(fileTextTf)
-                .addContainerGap())
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(secretKey, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(33, Short.MAX_VALUE))
         );
         fileReaderWriterPnlLayout.setVerticalGroup(
             fileReaderWriterPnlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -276,17 +276,18 @@ public class GUI extends javax.swing.JFrame {
                 .addGroup(fileReaderWriterPnlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(filenameTf, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(filenameLbl)
-                    .addComponent(txtExtensionLbl))
-                .addGap(18, 18, 18)
-                .addComponent(fileTextTf, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                    .addComponent(secretKey, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel1))
+                .addGap(63, 63, 63)
+                .addComponent(fileTextTf, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(28, 28, 28)
                 .addGroup(fileReaderWriterPnlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(writeFileBtn)
                     .addComponent(readFileBtn))
-                .addContainerGap(19, Short.MAX_VALUE))
+                .addContainerGap(99, Short.MAX_VALUE))
         );
 
-        applicationTp.addTab("File Reader/Writer", fileReaderWriterPnl);
+        applicationTp.addTab("File Encryption", fileReaderWriterPnl);
 
         fileOnePnl.setBorder(javax.swing.BorderFactory.createTitledBorder("File One"));
 
@@ -302,7 +303,7 @@ public class GUI extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(filenameOneLbl)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(filenameOneTf, javax.swing.GroupLayout.DEFAULT_SIZE, 168, Short.MAX_VALUE)
+                .addComponent(filenameOneTf)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(txtExtensionOneLbl)
                 .addContainerGap())
@@ -395,25 +396,21 @@ public class GUI extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(243, 243, 243)
-                        .addComponent(titleLbl)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(applicationTp, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING))
-                .addContainerGap())
+                .addGap(243, 243, 243)
+                .addComponent(titleLbl)
+                .addContainerGap(375, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(applicationTp, javax.swing.GroupLayout.PREFERRED_SIZE, 735, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(titleLbl)
-                .addGap(18, 18, 18)
-                .addComponent(applicationTp, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 299, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(20, 20, 20))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(applicationTp, javax.swing.GroupLayout.PREFERRED_SIZE, 421, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(312, 312, 312))
         );
 
         pack();
@@ -422,10 +419,6 @@ public class GUI extends javax.swing.JFrame {
     private void compareFilesBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_compareFilesBtnActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_compareFilesBtnActionPerformed
-
-    private void fileTextTfActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fileTextTfActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_fileTextTfActionPerformed
 
     private void filenameTwoTfActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_filenameTwoTfActionPerformed
         // TODO add your handling code here:
@@ -442,6 +435,41 @@ public class GUI extends javax.swing.JFrame {
     private void ppsnTfActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ppsnTfActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_ppsnTfActionPerformed
+
+    private void writeFileBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_writeFileBtnActionPerformed
+        String plainText = fileTextTf.getText();
+        if (!secretKey.getText().isEmpty()) {
+            try {
+                String encryptedString = AesEncryption.encrypt(plainText, secretKey.getText());
+                String path = "c:\\app.txt"; 
+                Files.write(Paths.get(path), encryptedString.getBytes());
+                filenameTf.setText("");
+                fileTextTf.setText("");
+                secretKey.setText("");
+                JOptionPane.showMessageDialog(null, "File saved to your device on: " + path);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "Secret Key Can't be Empty");
+        }
+    }//GEN-LAST:event_writeFileBtnActionPerformed
+
+    private void readFileBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_readFileBtnActionPerformed
+        if (!secretKey.getText().isEmpty()) {
+            JFileChooser chooser = new JFileChooser();
+            chooser.showOpenDialog(null);
+            File f = chooser.getSelectedFile();
+            String filePath = f.getAbsolutePath();
+            filenameTf.setText(filePath);
+            String encryptedString = readLineByLineJava8(filePath);
+            String decryptedString = AesEncryption.decrypt(encryptedString, secretKey.getText());
+            fileTextTf.setText(decryptedString);
+            secretKey.setText("");
+        } else {
+            JOptionPane.showMessageDialog(null, "Secret Key Can't be Empty");
+        }
+    }//GEN-LAST:event_readFileBtnActionPerformed
 
     /**
      * @param args the command line arguments
@@ -477,9 +505,21 @@ public class GUI extends javax.swing.JFrame {
             }
         });
     }
+    
+    
+    
+    private static String readLineByLineJava8(String filePath) {
+
+        String content = null;
+        try {
+            content = Files.lines(Paths.get(filePath)).collect(Collectors.joining(System.lineSeparator()));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return content;
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JTextArea appTa;
     private javax.swing.JTabbedPane applicationTp;
     private javax.swing.JButton compareFilesBtn;
     private javax.swing.JButton createUserBtn;
@@ -488,7 +528,7 @@ public class GUI extends javax.swing.JFrame {
     private javax.swing.JPanel fileCheckerPnl;
     private javax.swing.JPanel fileOnePnl;
     private javax.swing.JPanel fileReaderWriterPnl;
-    private javax.swing.JTextField fileTextTf;
+    private java.awt.TextArea fileTextTf;
     private javax.swing.JPanel fileTwoPnl;
     private javax.swing.JLabel filenameLbl;
     private javax.swing.JLabel filenameOneLbl;
@@ -497,9 +537,9 @@ public class GUI extends javax.swing.JFrame {
     private javax.swing.JLabel filenameTwoLbl;
     private javax.swing.JTextField filenameTwoTf;
     private javax.swing.JButton jButton4;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel8;
-    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextField jTextField6;
     private javax.swing.JTextField jTextField7;
     private javax.swing.JButton loginBtn;
@@ -510,8 +550,8 @@ public class GUI extends javax.swing.JFrame {
     private javax.swing.JButton printDetailsBtn;
     private javax.swing.JLabel printUsernameLbl;
     private javax.swing.JButton readFileBtn;
+    private javax.swing.JTextField secretKey;
     private javax.swing.JLabel titleLbl;
-    private javax.swing.JLabel txtExtensionLbl;
     private javax.swing.JLabel txtExtensionOneLbl;
     private javax.swing.JLabel txtExtensionTwoLbl;
     private javax.swing.JButton updateDetailsBtn;
