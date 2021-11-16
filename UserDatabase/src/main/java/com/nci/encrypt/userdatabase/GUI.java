@@ -6,7 +6,11 @@
 package com.nci.encrypt.userdatabase;
 
 //imports
+import java.io.File;
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
@@ -15,6 +19,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Scanner;
+import java.util.stream.Collectors;
+import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 
 /*
  * GUI.java
@@ -72,12 +79,13 @@ public class GUI extends javax.swing.JFrame {
         printDetailsBtn = new javax.swing.JButton();
         ppsnTf = new javax.swing.JTextField();
         fileReaderWriterPnl = new javax.swing.JPanel();
-        fileTextTf = new javax.swing.JTextField();
         filenameLbl = new javax.swing.JLabel();
         filenameTf = new javax.swing.JTextField();
         writeFileBtn = new javax.swing.JButton();
         readFileBtn = new javax.swing.JButton();
-        txtExtensionLbl = new javax.swing.JLabel();
+        textAreaDisplay = new java.awt.TextArea();
+        jLabel1 = new javax.swing.JLabel();
+        secretKey = new javax.swing.JTextField();
         fileCheckerPnl = new javax.swing.JPanel();
         fileOnePnl = new javax.swing.JPanel();
         filenameOneTf = new javax.swing.JTextField();
@@ -253,13 +261,6 @@ public class GUI extends javax.swing.JFrame {
 
         applicationTp.addTab("User Details", userDetailsPnl);
 
-        fileTextTf.setBorder(javax.swing.BorderFactory.createTitledBorder("File Text"));
-        fileTextTf.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                fileTextTfActionPerformed(evt);
-            }
-        });
-
         filenameLbl.setText("Filename:");
 
         filenameTf.addActionListener(new java.awt.event.ActionListener() {
@@ -268,35 +269,43 @@ public class GUI extends javax.swing.JFrame {
             }
         });
 
-        writeFileBtn.setText("Write To File");
+        writeFileBtn.setText("Encrypt");
+        writeFileBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                writeFileBtnActionPerformed(evt);
+            }
+        });
 
-        readFileBtn.setText("Read File");
+        readFileBtn.setText("Decrypt");
+        readFileBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                readFileBtnActionPerformed(evt);
+            }
+        });
 
-        txtExtensionLbl.setText(".txt");
+        jLabel1.setText("SecretKey");
 
         javax.swing.GroupLayout fileReaderWriterPnlLayout = new javax.swing.GroupLayout(fileReaderWriterPnl);
         fileReaderWriterPnl.setLayout(fileReaderWriterPnlLayout);
         fileReaderWriterPnlLayout.setHorizontalGroup(
             fileReaderWriterPnlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(fileReaderWriterPnlLayout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(fileReaderWriterPnlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(fileReaderWriterPnlLayout.createSequentialGroup()
-                        .addContainerGap()
                         .addComponent(filenameLbl)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(filenameTf, javax.swing.GroupLayout.PREFERRED_SIZE, 229, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtExtensionLbl)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 7, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, fileReaderWriterPnlLayout.createSequentialGroup()
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(55, 55, 55)
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(secretKey, javax.swing.GroupLayout.DEFAULT_SIZE, 223, Short.MAX_VALUE))
+                    .addComponent(textAreaDisplay, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(fileReaderWriterPnlLayout.createSequentialGroup()
+                        .addGap(15, 15, 15)
                         .addComponent(writeFileBtn)
-                        .addGap(60, 60, 60)))
-                .addComponent(readFileBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(182, 182, 182))
-            .addGroup(fileReaderWriterPnlLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(fileTextTf)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(readFileBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         fileReaderWriterPnlLayout.setVerticalGroup(
@@ -306,14 +315,15 @@ public class GUI extends javax.swing.JFrame {
                 .addGroup(fileReaderWriterPnlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(filenameTf, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(filenameLbl)
-                    .addComponent(txtExtensionLbl))
-                .addGap(18, 18, 18)
-                .addComponent(fileTextTf, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                    .addComponent(jLabel1)
+                    .addComponent(secretKey, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(textAreaDisplay, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(fileReaderWriterPnlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(writeFileBtn)
                     .addComponent(readFileBtn))
-                .addContainerGap(21, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         applicationTp.addTab("File Reader/Writer", fileReaderWriterPnl);
@@ -470,10 +480,6 @@ public class GUI extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_compareFilesBtnActionPerformed
 
-    private void fileTextTfActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fileTextTfActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_fileTextTfActionPerformed
-
     private void filenameTwoTfActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_filenameTwoTfActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_filenameTwoTfActionPerformed
@@ -530,6 +536,41 @@ public class GUI extends javax.swing.JFrame {
         //exit the application
         System.exit(0);
     }//GEN-LAST:event_exitApplicationBtnActionPerformed
+
+    private void readFileBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_readFileBtnActionPerformed
+        if (!secretKey.getText().isEmpty()) {
+            JFileChooser chooser = new JFileChooser();
+            chooser.showOpenDialog(null);
+            File f = chooser.getSelectedFile();
+            String filePath = f.getAbsolutePath();
+            filenameTf.setText(filePath);
+            String encryptedString = readLineByLineJava8(filePath);
+            String decryptedString = AesEncryption.decrypt(encryptedString, secretKey.getText());
+            textAreaDisplay.setText(decryptedString);
+            secretKey.setText("");
+        } else {
+            JOptionPane.showMessageDialog(null, "Secret Key Can't be Empty");
+        }
+    }//GEN-LAST:event_readFileBtnActionPerformed
+
+    private void writeFileBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_writeFileBtnActionPerformed
+        String plainText = textAreaDisplay.getText();
+        if (!secretKey.getText().isEmpty()) {
+            try {
+                String encryptedString = AesEncryption.encrypt(plainText, secretKey.getText());
+                String path = "c:\\app.txt"; 
+                Files.write(Paths.get(path), encryptedString.getBytes());
+                filenameTf.setText("");
+                textAreaDisplay.setText("");
+                secretKey.setText("");
+                JOptionPane.showMessageDialog(null, "File saved to your device on: " + path);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "Secret Key Can't be Empty");
+        }
+    }//GEN-LAST:event_writeFileBtnActionPerformed
 
     /**
      * @param args the command line arguments
@@ -635,6 +676,18 @@ public class GUI extends javax.swing.JFrame {
             return sqlError;
         }
     }
+    
+    
+    private static String readLineByLineJava8(String filePath) {
+
+        String content = null;
+        try {
+            content = Files.lines(Paths.get(filePath)).collect(Collectors.joining(System.lineSeparator()));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return content;
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextArea appTa;
@@ -647,7 +700,6 @@ public class GUI extends javax.swing.JFrame {
     private javax.swing.JPanel fileCheckerPnl;
     private javax.swing.JPanel fileOnePnl;
     private javax.swing.JPanel fileReaderWriterPnl;
-    private javax.swing.JTextField fileTextTf;
     private javax.swing.JPanel fileTwoPnl;
     private javax.swing.JLabel filenameLbl;
     private javax.swing.JLabel filenameOneLbl;
@@ -655,6 +707,7 @@ public class GUI extends javax.swing.JFrame {
     private javax.swing.JTextField filenameTf;
     private javax.swing.JLabel filenameTwoLbl;
     private javax.swing.JTextField filenameTwoTf;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JButton loginBtn;
@@ -668,8 +721,9 @@ public class GUI extends javax.swing.JFrame {
     private javax.swing.JButton printDetailsBtn;
     private javax.swing.JLabel printUsernameLbl;
     private javax.swing.JButton readFileBtn;
+    private javax.swing.JTextField secretKey;
+    private java.awt.TextArea textAreaDisplay;
     private javax.swing.JLabel titleLbl;
-    private javax.swing.JLabel txtExtensionLbl;
     private javax.swing.JLabel txtExtensionOneLbl;
     private javax.swing.JLabel txtExtensionTwoLbl;
     private javax.swing.JButton updateDetailsBtn;
