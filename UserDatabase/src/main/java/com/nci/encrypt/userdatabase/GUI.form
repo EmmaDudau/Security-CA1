@@ -360,28 +360,25 @@
             <DimensionLayout dim="0">
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" attributes="0">
+                      <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" attributes="0">
-                              <EmptySpace max="-2" attributes="0"/>
                               <Component id="filenameLbl" min="-2" max="-2" attributes="0"/>
                               <EmptySpace type="unrelated" max="-2" attributes="0"/>
                               <Component id="filenameTf" min="-2" pref="229" max="-2" attributes="0"/>
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Component id="txtExtensionLbl" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace pref="7" max="32767" attributes="0"/>
+                              <EmptySpace min="-2" pref="55" max="-2" attributes="0"/>
+                              <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                              <Component id="secretKey" pref="223" max="32767" attributes="0"/>
                           </Group>
-                          <Group type="102" alignment="1" attributes="0">
-                              <EmptySpace max="32767" attributes="0"/>
+                          <Component id="textAreaDisplay" alignment="0" max="32767" attributes="0"/>
+                          <Group type="102" attributes="0">
+                              <EmptySpace min="-2" pref="15" max="-2" attributes="0"/>
                               <Component id="writeFileBtn" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace min="-2" pref="60" max="-2" attributes="0"/>
+                              <EmptySpace max="32767" attributes="0"/>
+                              <Component id="readFileBtn" min="-2" pref="109" max="-2" attributes="0"/>
                           </Group>
                       </Group>
-                      <Component id="readFileBtn" min="-2" pref="109" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="182" max="-2" attributes="0"/>
-                  </Group>
-                  <Group type="102" alignment="0" attributes="0">
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Component id="fileTextTf" max="32767" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                   </Group>
               </Group>
@@ -393,33 +390,22 @@
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="filenameTf" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="filenameLbl" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="txtExtensionLbl" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="jLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="secretKey" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace type="separate" max="-2" attributes="0"/>
-                      <Component id="fileTextTf" min="-2" pref="113" max="-2" attributes="0"/>
-                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="textAreaDisplay" min="-2" pref="129" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="writeFileBtn" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="readFileBtn" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace pref="21" max="32767" attributes="0"/>
+                      <EmptySpace max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
           </Layout>
           <SubComponents>
-            <Component class="javax.swing.JTextField" name="fileTextTf">
-              <Properties>
-                <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
-                  <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
-                    <TitledBorder title="File Text"/>
-                  </Border>
-                </Property>
-              </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="fileTextTfActionPerformed"/>
-              </Events>
-            </Component>
             <Component class="javax.swing.JLabel" name="filenameLbl">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Filename:"/>
@@ -432,18 +418,28 @@
             </Component>
             <Component class="javax.swing.JButton" name="writeFileBtn">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Write To File"/>
+                <Property name="text" type="java.lang.String" value="Encrypt"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="writeFileBtnActionPerformed"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JButton" name="readFileBtn">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Read File"/>
+                <Property name="text" type="java.lang.String" value="Decrypt"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="readFileBtnActionPerformed"/>
+              </Events>
+            </Component>
+            <Component class="java.awt.TextArea" name="textAreaDisplay">
+            </Component>
+            <Component class="javax.swing.JLabel" name="jLabel1">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="SecretKey"/>
               </Properties>
             </Component>
-            <Component class="javax.swing.JLabel" name="txtExtensionLbl">
-              <Properties>
-                <Property name="text" type="java.lang.String" value=".txt"/>
-              </Properties>
+            <Component class="javax.swing.JTextField" name="secretKey">
             </Component>
           </SubComponents>
         </Container>
