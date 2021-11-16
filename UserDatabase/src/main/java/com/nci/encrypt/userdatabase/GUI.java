@@ -3,27 +3,36 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.nci.encrypt;
+package com.nci.encrypt.userdatabase;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.stream.Collectors;
-import javax.swing.JFileChooser;
-import javax.swing.JOptionPane;
+//imports
 
-/**
- *
- * @author rubyl
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.sql.*;
+import java.util.Scanner;
+
+/*
+ * GUI.java
+ * 14th November 2021
+ * Security Fundamentals and Development CA1 Part 2
+ * @authors: Group F - Ruby Lennon (x19128355), Emanuela Dudau (x19180675)
+ * Description - App GUI
  */
-public class GUI extends javax.swing.JFrame {
 
+public class GUI extends javax.swing.JFrame {
+    //declare variables
+    String userChoice, username, password;
+    
+    //create scanner object
+    Scanner scan = new Scanner(System.in);
+    
     /**
      * Creates new form GUI
      */
     public GUI() {
-        initComponents();
+        initComponents();//inistialise GUI components
     }
 
     /**
@@ -37,15 +46,17 @@ public class GUI extends javax.swing.JFrame {
 
         jLabel3 = new javax.swing.JLabel();
         titleLbl = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        appTa = new javax.swing.JTextArea();
         applicationTp = new javax.swing.JTabbedPane();
         userLoginPnl = new javax.swing.JPanel();
         loginBtn = new javax.swing.JButton();
         createUserBtn = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
+        logoutBtn = new javax.swing.JButton();
         usernameLbl = new javax.swing.JLabel();
-        jLabel8 = new javax.swing.JLabel();
-        jTextField6 = new javax.swing.JTextField();
-        jTextField7 = new javax.swing.JTextField();
+        passwordLbl = new javax.swing.JLabel();
+        usernameTf = new javax.swing.JTextField();
+        passwordTf = new javax.swing.JTextField();
         userDetailsPnl = new javax.swing.JPanel();
         usernameTwoLbl = new javax.swing.JLabel();
         passwordTwoLbl = new javax.swing.JLabel();
@@ -58,13 +69,12 @@ public class GUI extends javax.swing.JFrame {
         printDetailsBtn = new javax.swing.JButton();
         ppsnTf = new javax.swing.JTextField();
         fileReaderWriterPnl = new javax.swing.JPanel();
+        fileTextTf = new javax.swing.JTextField();
         filenameLbl = new javax.swing.JLabel();
         filenameTf = new javax.swing.JTextField();
         writeFileBtn = new javax.swing.JButton();
         readFileBtn = new javax.swing.JButton();
-        secretKey = new javax.swing.JTextField();
-        jLabel1 = new javax.swing.JLabel();
-        fileTextTf = new java.awt.TextArea();
+        txtExtensionLbl = new javax.swing.JLabel();
         fileCheckerPnl = new javax.swing.JPanel();
         fileOnePnl = new javax.swing.JPanel();
         filenameOneTf = new javax.swing.JTextField();
@@ -75,27 +85,44 @@ public class GUI extends javax.swing.JFrame {
         filenameTwoTf = new javax.swing.JTextField();
         txtExtensionTwoLbl = new javax.swing.JLabel();
         compareFilesBtn = new javax.swing.JButton();
+        exitApplicationBtn = new javax.swing.JButton();
 
         jLabel3.setText("jLabel3");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         titleLbl.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        titleLbl.setText("Application Title Here");
+        titleLbl.setText("Student Details Portal");
+
+        appTa.setColumns(20);
+        appTa.setRows(5);
+        appTa.setBorder(javax.swing.BorderFactory.createTitledBorder("Message"));
+        jScrollPane1.setViewportView(appTa);
+        appTa.getAccessibleContext().setAccessibleDescription("");
 
         loginBtn.setText("Login");
+        loginBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                loginBtnActionPerformed(evt);
+            }
+        });
 
         createUserBtn.setText("Create New User");
+        createUserBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                createUserBtnActionPerformed(evt);
+            }
+        });
 
-        jButton4.setText("Logout");
+        logoutBtn.setText("Logout");
 
         usernameLbl.setText("Username:");
 
-        jLabel8.setText("Password:");
+        passwordLbl.setText("Password:");
 
-        jTextField6.addActionListener(new java.awt.event.ActionListener() {
+        usernameTf.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField6ActionPerformed(evt);
+                usernameTfActionPerformed(evt);
             }
         });
 
@@ -107,18 +134,18 @@ public class GUI extends javax.swing.JFrame {
                 .addGap(90, 90, 90)
                 .addGroup(userLoginPnlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(usernameLbl)
-                    .addComponent(jLabel8)
+                    .addComponent(passwordLbl)
                     .addComponent(loginBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(userLoginPnlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(userLoginPnlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(jTextField6, javax.swing.GroupLayout.DEFAULT_SIZE, 265, Short.MAX_VALUE)
-                        .addComponent(jTextField7))
+                        .addComponent(usernameTf, javax.swing.GroupLayout.DEFAULT_SIZE, 265, Short.MAX_VALUE)
+                        .addComponent(passwordTf))
                     .addGroup(userLoginPnlLayout.createSequentialGroup()
                         .addComponent(createUserBtn)
                         .addGap(18, 18, 18)
-                        .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(195, Short.MAX_VALUE))
+                        .addComponent(logoutBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(113, Short.MAX_VALUE))
         );
         userLoginPnlLayout.setVerticalGroup(
             userLoginPnlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -126,15 +153,15 @@ public class GUI extends javax.swing.JFrame {
                 .addGap(47, 47, 47)
                 .addGroup(userLoginPnlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(usernameLbl)
-                    .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(usernameTf, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(userLoginPnlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel8)
-                    .addComponent(jTextField7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 215, Short.MAX_VALUE)
+                    .addComponent(passwordLbl)
+                    .addComponent(passwordTf, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 70, Short.MAX_VALUE)
                 .addGroup(userLoginPnlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(createUserBtn)
-                    .addComponent(jButton4)
+                    .addComponent(logoutBtn)
                     .addComponent(loginBtn))
                 .addGap(26, 26, 26))
         );
@@ -170,12 +197,7 @@ public class GUI extends javax.swing.JFrame {
             .addGroup(userDetailsPnlLayout.createSequentialGroup()
                 .addGroup(userDetailsPnlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(userDetailsPnlLayout.createSequentialGroup()
-                        .addGap(143, 143, 143)
-                        .addComponent(updateDetailsBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(47, 47, 47)
-                        .addComponent(printDetailsBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, userDetailsPnlLayout.createSequentialGroup()
-                        .addContainerGap()
+                        .addGap(70, 70, 70)
                         .addGroup(userDetailsPnlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, userDetailsPnlLayout.createSequentialGroup()
                                 .addComponent(emailLbl)
@@ -192,8 +214,13 @@ public class GUI extends javax.swing.JFrame {
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, userDetailsPnlLayout.createSequentialGroup()
                                 .addComponent(ppsnLbl)
                                 .addGap(18, 18, 18)
-                                .addComponent(ppsnTf, javax.swing.GroupLayout.PREFERRED_SIZE, 302, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                .addContainerGap(252, Short.MAX_VALUE))
+                                .addComponent(ppsnTf, javax.swing.GroupLayout.PREFERRED_SIZE, 302, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addGroup(userDetailsPnlLayout.createSequentialGroup()
+                        .addGap(143, 143, 143)
+                        .addComponent(updateDetailsBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(printDetailsBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(148, Short.MAX_VALUE))
         );
         userDetailsPnlLayout.setVerticalGroup(
             userDetailsPnlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -214,14 +241,21 @@ public class GUI extends javax.swing.JFrame {
                 .addGroup(userDetailsPnlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(ppsnTf, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(ppsnLbl))
-                .addGap(24, 24, 24)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 41, Short.MAX_VALUE)
                 .addGroup(userDetailsPnlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(updateDetailsBtn)
                     .addComponent(printDetailsBtn))
-                .addContainerGap(165, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         applicationTp.addTab("User Details", userDetailsPnl);
+
+        fileTextTf.setBorder(javax.swing.BorderFactory.createTitledBorder("File Text"));
+        fileTextTf.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                fileTextTfActionPerformed(evt);
+            }
+        });
 
         filenameLbl.setText("Filename:");
 
@@ -231,43 +265,36 @@ public class GUI extends javax.swing.JFrame {
             }
         });
 
-        writeFileBtn.setText("Encrypt File");
-        writeFileBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                writeFileBtnActionPerformed(evt);
-            }
-        });
+        writeFileBtn.setText("Write To File");
 
-        readFileBtn.setText("Decrypt File");
-        readFileBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                readFileBtnActionPerformed(evt);
-            }
-        });
+        readFileBtn.setText("Read File");
 
-        jLabel1.setText("Secret Key");
+        txtExtensionLbl.setText(".txt");
 
         javax.swing.GroupLayout fileReaderWriterPnlLayout = new javax.swing.GroupLayout(fileReaderWriterPnl);
         fileReaderWriterPnl.setLayout(fileReaderWriterPnlLayout);
         fileReaderWriterPnlLayout.setHorizontalGroup(
             fileReaderWriterPnlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(fileReaderWriterPnlLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(fileReaderWriterPnlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                .addGroup(fileReaderWriterPnlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(fileReaderWriterPnlLayout.createSequentialGroup()
-                        .addComponent(writeFileBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(readFileBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(fileTextTf, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 682, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, fileReaderWriterPnlLayout.createSequentialGroup()
+                        .addContainerGap()
                         .addComponent(filenameLbl)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(filenameTf, javax.swing.GroupLayout.PREFERRED_SIZE, 229, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jLabel1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(secretKey, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(33, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtExtensionLbl)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 7, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, fileReaderWriterPnlLayout.createSequentialGroup()
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(writeFileBtn)
+                        .addGap(60, 60, 60)))
+                .addComponent(readFileBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(182, 182, 182))
+            .addGroup(fileReaderWriterPnlLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(fileTextTf)
+                .addContainerGap())
         );
         fileReaderWriterPnlLayout.setVerticalGroup(
             fileReaderWriterPnlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -276,18 +303,17 @@ public class GUI extends javax.swing.JFrame {
                 .addGroup(fileReaderWriterPnlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(filenameTf, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(filenameLbl)
-                    .addComponent(secretKey, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel1))
-                .addGap(63, 63, 63)
-                .addComponent(fileTextTf, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(28, 28, 28)
+                    .addComponent(txtExtensionLbl))
+                .addGap(18, 18, 18)
+                .addComponent(fileTextTf, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
                 .addGroup(fileReaderWriterPnlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(writeFileBtn)
                     .addComponent(readFileBtn))
-                .addContainerGap(99, Short.MAX_VALUE))
+                .addContainerGap(21, Short.MAX_VALUE))
         );
 
-        applicationTp.addTab("File Encryption", fileReaderWriterPnl);
+        applicationTp.addTab("File Reader/Writer", fileReaderWriterPnl);
 
         fileOnePnl.setBorder(javax.swing.BorderFactory.createTitledBorder("File One"));
 
@@ -303,7 +329,7 @@ public class GUI extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(filenameOneLbl)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(filenameOneTf)
+                .addComponent(filenameOneTf, javax.swing.GroupLayout.DEFAULT_SIZE, 158, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(txtExtensionOneLbl)
                 .addContainerGap())
@@ -391,26 +417,47 @@ public class GUI extends javax.swing.JFrame {
 
         applicationTp.addTab("File Checker", fileCheckerPnl);
 
+        exitApplicationBtn.setText("Exit");
+        exitApplicationBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                exitApplicationBtnActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(243, 243, 243)
-                .addComponent(titleLbl)
-                .addContainerGap(375, Short.MAX_VALUE))
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(applicationTp, javax.swing.GroupLayout.PREFERRED_SIZE, 735, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane1)
+                            .addComponent(applicationTp)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(227, 227, 227)
+                                .addComponent(titleLbl))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(281, 281, 281)
+                                .addComponent(exitApplicationBtn)))
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap()
                 .addComponent(titleLbl)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(applicationTp, javax.swing.GroupLayout.PREFERRED_SIZE, 421, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(312, 312, 312))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
+                .addComponent(applicationTp, javax.swing.GroupLayout.PREFERRED_SIZE, 260, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 262, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(exitApplicationBtn)
+                .addGap(14, 14, 14))
         );
 
         pack();
@@ -420,13 +467,17 @@ public class GUI extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_compareFilesBtnActionPerformed
 
+    private void fileTextTfActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fileTextTfActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_fileTextTfActionPerformed
+
     private void filenameTwoTfActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_filenameTwoTfActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_filenameTwoTfActionPerformed
 
-    private void jTextField6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField6ActionPerformed
+    private void usernameTfActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_usernameTfActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField6ActionPerformed
+    }//GEN-LAST:event_usernameTfActionPerformed
 
     private void filenameTfActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_filenameTfActionPerformed
         // TODO add your handling code here:
@@ -436,40 +487,46 @@ public class GUI extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_ppsnTfActionPerformed
 
-    private void writeFileBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_writeFileBtnActionPerformed
-        String plainText = fileTextTf.getText();
-        if (!secretKey.getText().isEmpty()) {
-            try {
-                String encryptedString = AesEncryption.encrypt(plainText, secretKey.getText());
-                String path = "c:\\app.txt"; 
-                Files.write(Paths.get(path), encryptedString.getBytes());
-                filenameTf.setText("");
-                fileTextTf.setText("");
-                secretKey.setText("");
-                JOptionPane.showMessageDialog(null, "File saved to your device on: " + path);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        } else {
-            JOptionPane.showMessageDialog(null, "Secret Key Can't be Empty");
+    private void loginBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginBtnActionPerformed
+        if(usernameTf.getText().equalsIgnoreCase("")||passwordTf.getText().equalsIgnoreCase("")){
+            //if text is missing in the required text fields the user is alerted
+            appTa.append("\n\nPlease enter all required login information (username + password).");
+        }else{
+            username = usernameTf.getText();//get username from text field
+            password = passwordTf.getText();//get password from text field
+            
+            String encryptedPassword = HashPassword(password);
+                     
+            appTa.append(CheckUser(username, encryptedPassword));
         }
-    }//GEN-LAST:event_writeFileBtnActionPerformed
+    }//GEN-LAST:event_loginBtnActionPerformed
 
-    private void readFileBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_readFileBtnActionPerformed
-        if (!secretKey.getText().isEmpty()) {
-            JFileChooser chooser = new JFileChooser();
-            chooser.showOpenDialog(null);
-            File f = chooser.getSelectedFile();
-            String filePath = f.getAbsolutePath();
-            filenameTf.setText(filePath);
-            String encryptedString = readLineByLineJava8(filePath);
-            String decryptedString = AesEncryption.decrypt(encryptedString, secretKey.getText());
-            fileTextTf.setText(decryptedString);
-            secretKey.setText("");
-        } else {
-            JOptionPane.showMessageDialog(null, "Secret Key Can't be Empty");
+    private void createUserBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createUserBtnActionPerformed
+        if(usernameTf.getText().equalsIgnoreCase("")||passwordTf.getText().equalsIgnoreCase("")){
+            //if text is missing in the required text fields the user is alerted
+            appTa.append("\n\nPlease enter all required user creation information (username + password).");
+        }else{
+            username = usernameTf.getText();//get username from text field
+            password = passwordTf.getText();//get password from text field
+            
+            String encryptedPassword = HashPassword(password);//get hash value of password
+            
+            String createUserResponse = CreateUser(username, encryptedPassword);//store the create user response to string
+                       
+            if(createUserResponse.toUpperCase().startsWith("DUPLICATE ENTRY")){//if the create user response starts with duplicate entry
+                appTa.append("\n\nSorry, this username is unavailable.");//print this message
+            }else if(createUserResponse.toUpperCase().startsWith("DATA TRUNCATION")){//if the create user response starts with data truncation
+                appTa.append("\n\nInvalid username or password length.");//print this message
+            }else{
+                appTa.append("\n\n" + createUserResponse);//else print this response
+            }
         }
-    }//GEN-LAST:event_readFileBtnActionPerformed
+    }//GEN-LAST:event_createUserBtnActionPerformed
+
+    private void exitApplicationBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitApplicationBtnActionPerformed
+        //exit the application
+        System.exit(0);
+    }//GEN-LAST:event_exitApplicationBtnActionPerformed
 
     /**
      * @param args the command line arguments
@@ -506,29 +563,88 @@ public class GUI extends javax.swing.JFrame {
         });
     }
     
-    
-    
-    private static String readLineByLineJava8(String filePath) {
-
-        String content = null;
-        try {
-            content = Files.lines(Paths.get(filePath)).collect(Collectors.joining(System.lineSeparator()));
-        } catch (IOException e) {
-            e.printStackTrace();
+    //method to encrypt password using Hash (SHA-1 MessageDigest Algorithm)
+    public static String HashPassword(String password){
+        MessageDigest sha = null;//Message digests are secure one-way hash functions that take arbitrary-sized data and output a fixed-length hash value
+        try{
+            sha = MessageDigest.getInstance("SHA-1");//SHA-1 MessagDigest Algorithm selected
+        }catch(NoSuchAlgorithmException e){
+            System.out.println("No such algorithm");
         }
-        return content;
+        
+        byte b[] = password.getBytes();//Get they byte value of password 
+        
+        byte[] hash = sha.digest(b);//byte array used to store the digested password using SHA-1 algorithm
+        
+        String encryptedPassword = new String(hash, StandardCharsets.UTF_8);//converting the hash to a string and storing in encryptedPassword
+        
+        return encryptedPassword;//return encryptedPassword
+        
     }
+    
+    //method to create a new user in the database
+    private static String CreateUser(String username, String password){
+        try{
+            String returnStatement;
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/userstore", "root", "RLNCIsqlPass123*");//connect to userstore schema/database on localhost
+            String sql = "INSERT INTO users (user_name, password) VALUES (?, ?)";//SQL statement to create new user in users table
+            PreparedStatement statement = con.prepareStatement(sql);//prepared statement is more secure than plain statement against SQL injection
+            statement.setString(1, username);//set the first statement parameter (?) to the username value
+            statement.setString(2, password);//set the second statement parameter (?) to the password value
+            
+            statement.executeUpdate();//execute the statement
+            
+            con.close();//close connection
+            
+            return returnStatement = "New user created";
+        }catch(SQLException e){
+            System.out.println("SQL Error: " + e.getMessage());
+            String sqlError;
+            sqlError = e.getMessage();
+            return sqlError;
+        }
+    }
+    
+    //method to check if a user exists in the database
+    private static String CheckUser(String username, String password){
+        try{
+            String returnStatement;            
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/userstore", "root", "RLNCIsqlPass123*");//connect to userstore schema/database on localhost
+            String sql = "SELECT * FROM users where user_name = ? and password = ?";
+            PreparedStatement statement = con.prepareStatement(sql);//prepared statement is more secure than plain statement against SQL injection
+            statement.setString(1, username);//set the first statement parameter (?) to the username value
+            statement.setString(2, password);//set the second statement parameter (?) to the password value
+            
+            ResultSet results = statement.executeQuery();//execute the statement            
+                       
+            if(results.next()){
+                con.close();//close connection
+                return returnStatement = "\n\nYou have successfully logged in.";
+            }else{
+                con.close();//close connection
+                return returnStatement = "\n\nLogin failed.";
+            }
+            
+        }catch(SQLException e){
+            System.out.println("SQL Error: " + e.getMessage());
+            String sqlError;
+            sqlError = e.getMessage();
+            return sqlError;
+        }
+    }    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTextArea appTa;
     private javax.swing.JTabbedPane applicationTp;
     private javax.swing.JButton compareFilesBtn;
     private javax.swing.JButton createUserBtn;
     private javax.swing.JLabel emailLbl;
     private javax.swing.JTextField emailTf;
+    private javax.swing.JButton exitApplicationBtn;
     private javax.swing.JPanel fileCheckerPnl;
     private javax.swing.JPanel fileOnePnl;
     private javax.swing.JPanel fileReaderWriterPnl;
-    private java.awt.TextArea fileTextTf;
+    private javax.swing.JTextField fileTextTf;
     private javax.swing.JPanel fileTwoPnl;
     private javax.swing.JLabel filenameLbl;
     private javax.swing.JLabel filenameOneLbl;
@@ -536,13 +652,12 @@ public class GUI extends javax.swing.JFrame {
     private javax.swing.JTextField filenameTf;
     private javax.swing.JLabel filenameTwoLbl;
     private javax.swing.JTextField filenameTwoTf;
-    private javax.swing.JButton jButton4;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel8;
-    private javax.swing.JTextField jTextField6;
-    private javax.swing.JTextField jTextField7;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JButton loginBtn;
+    private javax.swing.JButton logoutBtn;
+    private javax.swing.JLabel passwordLbl;
+    private javax.swing.JTextField passwordTf;
     private javax.swing.JLabel passwordTwoLbl;
     private javax.swing.JTextField passwordTwoTf;
     private javax.swing.JLabel ppsnLbl;
@@ -550,14 +665,15 @@ public class GUI extends javax.swing.JFrame {
     private javax.swing.JButton printDetailsBtn;
     private javax.swing.JLabel printUsernameLbl;
     private javax.swing.JButton readFileBtn;
-    private javax.swing.JTextField secretKey;
     private javax.swing.JLabel titleLbl;
+    private javax.swing.JLabel txtExtensionLbl;
     private javax.swing.JLabel txtExtensionOneLbl;
     private javax.swing.JLabel txtExtensionTwoLbl;
     private javax.swing.JButton updateDetailsBtn;
     private javax.swing.JPanel userDetailsPnl;
     private javax.swing.JPanel userLoginPnl;
     private javax.swing.JLabel usernameLbl;
+    private javax.swing.JTextField usernameTf;
     private javax.swing.JLabel usernameTwoLbl;
     private javax.swing.JButton writeFileBtn;
     // End of variables declaration//GEN-END:variables
