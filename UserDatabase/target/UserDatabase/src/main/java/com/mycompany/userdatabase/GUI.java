@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.nci.encrypt.userdatabase;
+package com.mycompany.userdatabase;
 
 //imports
 import java.nio.charset.StandardCharsets;
@@ -27,10 +27,10 @@ import java.util.Scanner;
 public class GUI extends javax.swing.JFrame {
     //declare variables
     String userChoice, username, password;
-
+    
     //create scanner object
     Scanner scan = new Scanner(System.in);
-
+    
     /**
      * Creates new form GUI
      */
@@ -497,9 +497,9 @@ public class GUI extends javax.swing.JFrame {
         }else{
             username = usernameTf.getText();//get username from text field
             password = passwordTf.getText();//get password from text field
-
+            
             String encryptedPassword = HashPassword(password);
-
+                     
             appTa.append(CheckUser(username, encryptedPassword));
         }
     }//GEN-LAST:event_loginBtnActionPerformed
@@ -511,11 +511,11 @@ public class GUI extends javax.swing.JFrame {
         }else{
             username = usernameTf.getText();//get username from text field
             password = passwordTf.getText();//get password from text field
-
+            
             String encryptedPassword = HashPassword(password);//get hash value of password
-
+            
             String createUserResponse = CreateUser(username, encryptedPassword);//store the create user response to string
-
+                       
             if(createUserResponse.toUpperCase().startsWith("DUPLICATE ENTRY")){//if the create user response starts with duplicate entry
                 appTa.append("\n\nSorry, this username is unavailable.");//print this message
             }else if(createUserResponse.toUpperCase().startsWith("DATA TRUNCATION")){//if the create user response starts with data truncation
@@ -565,7 +565,7 @@ public class GUI extends javax.swing.JFrame {
             }
         });
     }
-
+    
     //method to encrypt password using Hash (SHA-1 MessageDigest Algorithm)
     public static String HashPassword(String password){
         MessageDigest sha = null;//Message digests are secure one-way hash functions that take arbitrary-sized data and output a fixed-length hash value
@@ -574,17 +574,17 @@ public class GUI extends javax.swing.JFrame {
         }catch(NoSuchAlgorithmException e){
             System.out.println("No such algorithm");
         }
-
-        byte b[] = password.getBytes();//Get they byte value of password
-
+        
+        byte b[] = password.getBytes();//Get they byte value of password 
+        
         byte[] hash = sha.digest(b);//byte array used to store the digested password using SHA-1 algorithm
-
+        
         String encryptedPassword = new String(hash, StandardCharsets.UTF_8);//converting the hash to a string and storing in encryptedPassword
-
+        
         return encryptedPassword;//return encryptedPassword
-
+        
     }
-
+    
     //method to create a new user in the database
     private static String CreateUser(String username, String password){
         try{
@@ -594,11 +594,11 @@ public class GUI extends javax.swing.JFrame {
             PreparedStatement statement = con.prepareStatement(sql);//prepared statement is more secure than plain statement against SQL injection
             statement.setString(1, username);//set the first statement parameter (?) to the username value
             statement.setString(2, password);//set the second statement parameter (?) to the password value
-
+            
             statement.executeUpdate();//execute the statement
-
+            
             con.close();//close connection
-
+            
             return returnStatement = "New user created";
         }catch(SQLException e){
             System.out.println("SQL Error: " + e.getMessage());
@@ -607,19 +607,19 @@ public class GUI extends javax.swing.JFrame {
             return sqlError;
         }
     }
-
+    
     //method to check if a user exists in the database
     private static String CheckUser(String username, String password){
         try{
-            String returnStatement;
+            String returnStatement;            
             Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/userstore", "root", "RLNCIsqlPass123*");//connect to userstore schema/database on localhost
             String sql = "SELECT * FROM users where user_name = ? and password = ?";
             PreparedStatement statement = con.prepareStatement(sql);//prepared statement is more secure than plain statement against SQL injection
             statement.setString(1, username);//set the first statement parameter (?) to the username value
             statement.setString(2, password);//set the second statement parameter (?) to the password value
-
-            ResultSet results = statement.executeQuery();//execute the statement
-
+            
+            ResultSet results = statement.executeQuery();//execute the statement            
+                       
             if(results.next()){
                 con.close();//close connection
                 return returnStatement = "\n\nYou have successfully logged in.";
@@ -627,14 +627,14 @@ public class GUI extends javax.swing.JFrame {
                 con.close();//close connection
                 return returnStatement = "\n\nLogin failed.";
             }
-
+            
         }catch(SQLException e){
             System.out.println("SQL Error: " + e.getMessage());
             String sqlError;
             sqlError = e.getMessage();
             return sqlError;
         }
-    }
+    }    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextArea appTa;

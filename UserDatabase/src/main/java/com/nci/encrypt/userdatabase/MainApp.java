@@ -16,6 +16,6 @@ package com.nci.encrypt.userdatabase;
 public class MainApp {
     public static void main(String[] args){
         GUI myGUI = new GUI();
-        myGUI.setVisible(true);       
+        myGUI.setVisible(true);
     }
 }
