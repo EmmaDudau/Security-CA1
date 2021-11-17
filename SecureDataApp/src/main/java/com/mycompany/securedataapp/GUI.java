@@ -12,17 +12,18 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.security.PrivateKey;
+import java.security.PublicKey;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Scanner;
-import java.util.stream.Collectors;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
@@ -83,6 +84,9 @@ public class GUI extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         secretKey = new javax.swing.JTextField();
         userDetailsPnl = new javax.swing.JPanel();
+        asymmetricTextArea = new java.awt.TextArea();
+        asymmetricBtnEncrypt = new javax.swing.JButton();
+        asymmetricBtnDecrypt = new javax.swing.JButton();
         fileCheckerPnl = new javax.swing.JPanel();
         fileOnePnl = new javax.swing.JPanel();
         filenameOneTf = new javax.swing.JTextField();
@@ -207,7 +211,7 @@ public class GUI extends javax.swing.JFrame {
                             .addComponent(updatePPSNBtn, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
                         .addGroup(userLoginPnlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(createUserBtn, javax.swing.GroupLayout.DEFAULT_SIZE, 160, Short.MAX_VALUE)
+                            .addComponent(createUserBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(printDetailsBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(9, 9, 9))
                     .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -300,15 +304,44 @@ public class GUI extends javax.swing.JFrame {
 
         userDetailsPnl.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
+        asymmetricBtnEncrypt.setText("Encrypt");
+        asymmetricBtnEncrypt.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                asymmetricBtnEncryptActionPerformed(evt);
+            }
+        });
+
+        asymmetricBtnDecrypt.setText("Decrypt");
+        asymmetricBtnDecrypt.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                asymmetricBtnDecryptActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout userDetailsPnlLayout = new javax.swing.GroupLayout(userDetailsPnl);
         userDetailsPnl.setLayout(userDetailsPnlLayout);
         userDetailsPnlLayout.setHorizontalGroup(
             userDetailsPnlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 811, Short.MAX_VALUE)
+            .addGroup(userDetailsPnlLayout.createSequentialGroup()
+                .addGap(24, 24, 24)
+                .addGroup(userDetailsPnlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(userDetailsPnlLayout.createSequentialGroup()
+                        .addComponent(asymmetricBtnEncrypt)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(asymmetricBtnDecrypt))
+                    .addComponent(asymmetricTextArea, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 806, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(43, Short.MAX_VALUE))
         );
         userDetailsPnlLayout.setVerticalGroup(
             userDetailsPnlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 228, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, userDetailsPnlLayout.createSequentialGroup()
+                .addContainerGap(56, Short.MAX_VALUE)
+                .addComponent(asymmetricTextArea, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(49, 49, 49)
+                .addGroup(userDetailsPnlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(asymmetricBtnEncrypt)
+                    .addComponent(asymmetricBtnDecrypt))
+                .addContainerGap())
         );
 
         applicationTp.addTab("Asymmetric Encryption", userDetailsPnl);
@@ -336,7 +369,7 @@ public class GUI extends javax.swing.JFrame {
                 .addGroup(fileOnePnlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(filenameOneLbl)
                     .addComponent(filenameOneTf, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(62, Short.MAX_VALUE))
+                .addContainerGap(50, Short.MAX_VALUE))
         );
 
         fileTwoPnl.setBorder(javax.swing.BorderFactory.createTitledBorder("File Two"));
@@ -359,7 +392,7 @@ public class GUI extends javax.swing.JFrame {
                 .addComponent(filenameTwoLbl)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(filenameTwoTf, javax.swing.GroupLayout.PREFERRED_SIZE, 277, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(21, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         fileTwoPnlLayout.setVerticalGroup(
             fileTwoPnlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -396,7 +429,7 @@ public class GUI extends javax.swing.JFrame {
                         .addComponent(compareFilesBtn)
                         .addContainerGap(378, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, fileCheckerPnlLayout.createSequentialGroup()
-                        .addComponent(fileOnePnl, javax.swing.GroupLayout.DEFAULT_SIZE, 362, Short.MAX_VALUE)
+                        .addComponent(fileOnePnl, javax.swing.GroupLayout.DEFAULT_SIZE, 419, Short.MAX_VALUE)
                         .addGap(34, 34, 34)
                         .addComponent(fileTwoPnl, javax.swing.GroupLayout.PREFERRED_SIZE, 384, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(25, 25, 25))
@@ -462,7 +495,7 @@ public class GUI extends javax.swing.JFrame {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap(14, Short.MAX_VALUE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(titleLbl)
                 .addGap(18, 18, 18)
                 .addComponent(applicationTp, javax.swing.GroupLayout.PREFERRED_SIZE, 260, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -509,7 +542,7 @@ public class GUI extends javax.swing.JFrame {
                        
             String fileOneString = sbOne.toString();//store the string builder value in string
             
-            String encryptedFileOneString = HashFormatter(fileOneString);//convert the string value to hash value and store in string
+            String encryptedFileOneString = Utils.HashFormatter(fileOneString);//convert the string value to hash value and store in string
             
             //file two code
             String filenameTwo = filenameTwoTf.getText();//get the user input from the text field 
@@ -533,7 +566,7 @@ public class GUI extends javax.swing.JFrame {
 
             String fileTwoString = sbTwo.toString();//store the string builder value in string
 
-            String encryptedFileTwoString = HashFormatter(fileTwoString);//convert the string value to hash value and store in string                      
+            String encryptedFileTwoString = Utils.HashFormatter(fileTwoString);//convert the string value to hash value and store in string                      
 
             if(fileOneFound == true && fileTwoFound == true){//if both files were found
                 if(encryptedFileOneString.equals(encryptedFileTwoString)){//if the file one hash value equals the file two hash value
@@ -565,7 +598,7 @@ public class GUI extends javax.swing.JFrame {
             File f = chooser.getSelectedFile();
             String filePath = f.getAbsolutePath();
             filenameTf.setText(filePath);
-            String encryptedString = readLineByLineJava8(filePath);
+            String encryptedString = Utils.readLineByLine(filePath);
             String decryptedString = AesEncryption.decrypt(encryptedString, secretKey.getText());
             textAreaDisplay.setText(decryptedString);
             secretKey.setText("");
@@ -579,12 +612,14 @@ public class GUI extends javax.swing.JFrame {
         if (!secretKey.getText().isEmpty()) {
             try {
                 String encryptedString = AesEncryption.encrypt(plainText, secretKey.getText());
-                String path = "c:\\app.txt"; 
-                Files.write(Paths.get(path), encryptedString.getBytes());
+                Utils.writeEncryptedStringToFile("symetricEncryptedFile.txt", encryptedString);
                 filenameTf.setText("");
                 textAreaDisplay.setText("");
                 secretKey.setText("");
-                JOptionPane.showMessageDialog(null, "File saved to your device on: " + path);
+                Path currentRelativePath = Paths.get("");
+                String path = currentRelativePath.toAbsolutePath().toString();
+                JOptionPane.showMessageDialog(null, "File saved to your device");
+                appTa.append("File (symetricEncryptedFile.txt) was saved to your device on path: " + path);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -613,9 +648,9 @@ public class GUI extends javax.swing.JFrame {
             username = usernameTf.getText();//get username from text field
             password = passwordTf.getText();//get password from text field
 
-            String encryptedPassword = HashFormatter(password);//get hash value of password
+            String encryptedPassword = Utils.HashFormatter(password);//get hash value of password
 
-            String createUserResponse = CreateUser(username, encryptedPassword);//store the create user response to string
+            String createUserResponse = Utils.CreateUser(username, encryptedPassword);//store the create user response to string
 
             if(createUserResponse.toUpperCase().startsWith("DUPLICATE ENTRY")){//if the create user response starts with duplicate entry
                 appTa.append("\nSorry, this username is unavailable.");//print this message
@@ -640,9 +675,9 @@ public class GUI extends javax.swing.JFrame {
             username = usernameTf.getText();//get username from text field
             password = passwordTf.getText();//get password from text field
 
-            String encryptedPassword = HashFormatter(password);//get hash value of password
+            String encryptedPassword = Utils.HashFormatter(password);//get hash value of password
 
-            appTa.append("\n"+CheckUser(username, encryptedPassword));//print the check user response
+            appTa.append("\n"+Utils.CheckUser(username, encryptedPassword));//print the check user response
             
             //clear the text fields
             usernameTf.setText("");
@@ -662,14 +697,14 @@ public class GUI extends javax.swing.JFrame {
             password = passwordTf.getText();//get password from text field
             ppsn = ppsnTf.getText();//get PPSN from text field - plain text to be encrypted
             
-            String encryptedPassword = HashFormatter(password);//get hash value of password
+            String encryptedPassword = Utils.HashFormatter(password);//get hash value of password
             
-            if(CheckUser(username, encryptedPassword).equals("You have successfully logged in.")){//if the check user repsonse equals this text  
+            if(Utils.CheckUser(username, encryptedPassword).equals("You have successfully logged in.")){//if the check user repsonse equals this text  
                 String key = "IDeCVaBRGoWE1Xb+X4MdZrq7UXgB3M58m3Xpdk4b+uU=";//set the AES encryption key
                 
                 String cipherPPSN = AesEncryption.encrypt(ppsn, key);//encrypt the PPSN value by user using the key and store and return encrypted value
                                       
-                appTa.append("\nPPSN Number: " + UpdatePPSN(username, encryptedPassword, cipherPPSN));//update the user PPSN number (PPSN encrypted stored as encrypted in database)
+                appTa.append("\nPPSN Number: " + Utils.UpdatePPSN(username, encryptedPassword, cipherPPSN));//update the user PPSN number (PPSN encrypted stored as encrypted in database)
 
             }else{//else if the login was unsuccessful
                 appTa.append("\nLogin failed, please try again.");
@@ -690,12 +725,12 @@ public class GUI extends javax.swing.JFrame {
             username = usernameTf.getText();//get username from text field
             password = passwordTf.getText();//get password from text field
             
-            String encryptedPassword = HashFormatter(password);//get hash value of password
+            String encryptedPassword = Utils.HashFormatter(password);//get hash value of password
             
-            if(CheckUser(username, encryptedPassword).equals("You have successfully logged in.")){//if the login details are correct              
+            if(Utils.CheckUser(username, encryptedPassword).equals("You have successfully logged in.")){//if the login details are correct              
                 String key = "IDeCVaBRGoWE1Xb+X4MdZrq7UXgB3M58m3Xpdk4b+uU=";
                 
-                String userPPSN = GetUserDetails(username, encryptedPassword);//get the encrypted user PPSN from the database
+                String userPPSN = Utils.GetUserDetails(username, encryptedPassword);//get the encrypted user PPSN from the database
                 
                 String decryptedString = AesEncryption.decrypt(userPPSN, key);//decrypt the user PPSN retrieved from database
 
@@ -711,6 +746,40 @@ public class GUI extends javax.swing.JFrame {
         }
 
     }//GEN-LAST:event_printDetailsBtnActionPerformed
+
+    private void asymmetricBtnEncryptActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_asymmetricBtnEncryptActionPerformed
+        try {
+            AsymmetricEncryption ac = new AsymmetricEncryption();
+            PrivateKey privateKey = ac.getPrivate("KeyPair/privateKey");
+            String msg = asymmetricTextArea.getText();
+            String encrypted_msg = ac.encryptText(msg, privateKey);
+            Utils.writeEncryptedStringToFile("asymetricEncryptedFile.txt", encrypted_msg);
+            asymmetricTextArea.setText("");
+            Path currentRelativePath = Paths.get("");
+            String path = currentRelativePath.toAbsolutePath().toString();
+            JOptionPane.showMessageDialog(null, "File saved to your device");
+            appTa.append("File (asymetricEncryptedFile.txt) was saved to your device on path: " + path);
+        } catch (Exception e) {
+            System.out.println("Error while encryption: " + e);
+        }
+    }//GEN-LAST:event_asymmetricBtnEncryptActionPerformed
+
+    private void asymmetricBtnDecryptActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_asymmetricBtnDecryptActionPerformed
+ try {
+            AsymmetricEncryption ac = new AsymmetricEncryption();
+            PublicKey publicKey = ac.getPublic("KeyPair/publicKey");
+            JFileChooser chooser = new JFileChooser();
+            chooser.showOpenDialog(null);
+            File f = chooser.getSelectedFile();
+            String filePath = f.getAbsolutePath();
+            String encryptedString = Utils.readLineByLine(filePath);
+            String decryptedString = ac.decryptText(encryptedString, publicKey);
+            asymmetricTextArea.setText(decryptedString);
+            JOptionPane.showMessageDialog(null, "Successful file decryption!");
+        } catch (Exception e) {
+            System.out.println("Error during decryption: " + e);
+        }
+    }//GEN-LAST:event_asymmetricBtnDecryptActionPerformed
 
     /**
      * @param args the command line arguments
@@ -748,144 +817,21 @@ public class GUI extends javax.swing.JFrame {
         });
     }
 
-    //method to encrypt string value using Hash (SHA-1 MessageDigest Algorithm)
-    public static String HashFormatter(String password){
-        MessageDigest sha = null;//Message digests are secure one-way hash functions that take arbitrary-sized data and output a fixed-length hash value
-        try{
-            sha = MessageDigest.getInstance("SHA-1");//SHA-1 MessagDigest Algorithm selected
-        }catch(NoSuchAlgorithmException e){
-            System.out.println("No such algorithm");
-        }
 
-        byte b[] = password.getBytes();//Get they byte value of password
-
-        byte[] hash = sha.digest(b);//byte array used to store the digested password using SHA-1 algorithm
-
-        String encryptedPassword = new String(hash, StandardCharsets.UTF_8);//converting the hash to a string and storing in encryptedPassword
-
-        return encryptedPassword;//return encryptedPassword
-
-    }
-
-    //method to create a new user in the database
-    private static String CreateUser(String username, String password){
-        try{
-            String returnStatement;//string to restore method return statement
-            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/userstore", "root", "RLNCIsqlPass123*");//connect to userstore schema/database on localhost
-            String sql = "INSERT INTO users (user_name, password) VALUES (?, ?)";//SQL statement to create new user in users table
-            PreparedStatement statement = con.prepareStatement(sql);//prepared statement is more secure than plain statement against SQL injection
-            statement.setString(1, username);//set the first statement parameter (?) to the username value
-            statement.setString(2, password);//set the second statement parameter (?) to the password value
-
-            statement.executeUpdate();//execute the statement
-
-            con.close();//close connection
-
-            return returnStatement = "New user created";//return this statement
-        }catch(SQLException e){
-            System.out.println("SQL Error: " + e.getMessage());
-            String sqlError;
-            sqlError = e.getMessage();
-            return sqlError;//return the SQL error
-        }
-    }
-
-    //method to check if a user exists in the database using username and password
-    private static String CheckUser(String username, String password){
-        try{
-            String returnStatement;//string to restore method return statement
-            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/userstore", "root", "RLNCIsqlPass123*");//connect to userstore schema/database on localhost
-            String sql = "SELECT * FROM users where user_name = ? and password = ?";//SQL statement
-            PreparedStatement statement = con.prepareStatement(sql);//prepared statement is more secure than plain statement against SQL injection
-            statement.setString(1, username);//set the first statement parameter (?) to the username value
-            statement.setString(2, password);//set the second statement parameter (?) to the password value
-            
-            ResultSet results = statement.executeQuery();//execute the statement and store results set
-
-            if(results.next()){//if true
-                con.close();//close connection
-                return returnStatement = "You have successfully logged in.";
-            }else{
-                con.close();//close connection
-                return returnStatement = "Login failed.";
-            }
-
-        }catch(SQLException e){
-            System.out.println("SQL Error: " + e.getMessage());
-            String sqlError;
-            sqlError = e.getMessage();
-            return sqlError;//return the SQL error
-        }
-    }
     
-    //method to check if a user exists in the database
-    private static String GetUserDetails(String username, String password){
-        try{
-            String returnStatement;//string to restore method return statement
-            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/userstore", "root", "RLNCIsqlPass123*");//connect to userstore schema/database on localhost
-            String sql = "SELECT * FROM users WHERE user_name=? AND password=?";//SQL statement
-            PreparedStatement statement = con.prepareStatement(sql);//prepared statement is more secure than plain statement against SQL injection
-            statement.setString(1, username);//set the first statement parameter (?) to the username value
-            statement.setString(2, password);//set the second statement parameter (?) to the password value
-
-            ResultSet results = statement.executeQuery();//execute the statement
-
-            if(results.next()){
-                returnStatement = results.getString("PPSN");//get the PPSN column value at first index pointer
-                con.close();//close connection
-                return returnStatement;//return the PPSN number
-            }else{
-                con.close();//close connection
-                return returnStatement = "Login failed.";
-            }
-
-        }catch(SQLException e){
-            System.out.println("SQL Error: " + e.getMessage());
-            String sqlError;
-            sqlError = e.getMessage();
-            return sqlError;//prin the SQL error
-        }
-    }
     
-    //method to update user ppsn number in users table in userstore database
-    private static String UpdatePPSN(String username, String password, String ppsn){
-        try{
-            String returnStatement;//string to restore method return statement
-            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/userstore", "root", "RLNCIsqlPass123*");//connect to userstore schema/database on localhost
-            String sql = "UPDATE users SET PPSN=? WHERE user_name=? and password=?";//SQL statement to update PPSN for specified user in the users table
-            PreparedStatement statement = con.prepareStatement(sql);//prepared statement is more secure than plain statement against SQL injection
-            statement.setString(1, ppsn);//set the first statement parameter (?) to the ppsn value
-            statement.setString(2, username);//set the second statement parameter (?) to the password value
-            statement.setString(3, password);//set the second statement parameter (?) to the password value
-
-            statement.executeUpdate();//execute the statement
-
-            con.close();//close connection
-
-            return returnStatement = "PPSN updated.";//reutrn the following
-        }catch(SQLException e){
-            System.out.println("SQL Error: " + e.getMessage());
-            String sqlError;
-            sqlError = e.getMessage();
-            return sqlError;//print the SQL error
-        }
-    }
+   
     
-    private static String readLineByLineJava8(String filePath) {
-
-        String content = null;
-        try {
-            content = Files.lines(Paths.get(filePath)).collect(Collectors.joining(System.lineSeparator()));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return content;
-    }
+    
+  
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel acceptedFileExtentionNoteLbl;
     private javax.swing.JTextArea appTa;
     private javax.swing.JTabbedPane applicationTp;
+    private javax.swing.JButton asymmetricBtnDecrypt;
+    private javax.swing.JButton asymmetricBtnEncrypt;
+    private java.awt.TextArea asymmetricTextArea;
     private javax.swing.JButton clearAppTaBtn;
     private javax.swing.JButton compareFilesBtn;
     private javax.swing.JButton createUserBtn;
