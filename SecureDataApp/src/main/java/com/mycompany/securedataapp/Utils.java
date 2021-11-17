@@ -5,6 +5,7 @@
  */
 package com.mycompany.securedataapp;
 
+//imports
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -19,12 +20,15 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.stream.Collectors;
 
-/**
- *
- * @author Emanuela Dudau X19180675
+/*
+ * Utils.java
+ * 17th November 2021
+ * Security Fundamentals and Development CA1 Part 2
+ * Group F - Ruby Lennon (x19128355), Emanuela Dudau (x19180675)
+ * Description - Class to store GUI utils
  */
+
 public class Utils {
-    
     
     /**
      * Write string to a file and save it to default project location 
@@ -39,7 +43,6 @@ public class Utils {
         outputStream.close();
     }
       
-    
     /**
      * Reads lines from a text file
      * @param filePath
@@ -56,7 +59,7 @@ public class Utils {
     }      
     
     
-        //method to encrypt string value using Hash (SHA-1 MessageDigest Algorithm)
+    //method to encrypt string value using Hash (SHA-1 MessageDigest Algorithm)
     public static String HashFormatter(String password){
         MessageDigest sha = null;//Message digests are secure one-way hash functions that take arbitrary-sized data and output a fixed-length hash value
         try{
@@ -170,7 +173,7 @@ public class Utils {
 
             con.close();//close connection
 
-            return returnStatement = "PPSN updated.";//reutrn the following
+            return returnStatement = "PPSN Encrypted and stored in userstore database";//reutrn the following
         }catch(SQLException e){
             System.out.println("SQL Error: " + e.getMessage());
             String sqlError;
