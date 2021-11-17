@@ -11,18 +11,10 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
 import java.security.PublicKey;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.Scanner;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
@@ -619,7 +611,7 @@ public class GUI extends javax.swing.JFrame {
                 Path currentRelativePath = Paths.get("");
                 String path = currentRelativePath.toAbsolutePath().toString();
                 JOptionPane.showMessageDialog(null, "File saved to your device");
-                appTa.append("File (symetricEncryptedFile.txt) was saved to your device on path: " + path);
+                appTa.append("\nFile (symetricEncryptedFile.txt) was saved to your device on path: " + path);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -704,7 +696,7 @@ public class GUI extends javax.swing.JFrame {
                 
                 String cipherPPSN = AesEncryption.encrypt(ppsn, key);//encrypt the PPSN value by user using the key and store and return encrypted value
                                       
-                appTa.append("\nPPSN Number: " + Utils.UpdatePPSN(username, encryptedPassword, cipherPPSN));//update the user PPSN number (PPSN encrypted stored as encrypted in database)
+                appTa.append("\n" + Utils.UpdatePPSN(username, encryptedPassword, cipherPPSN));//update the user PPSN number (PPSN encrypted stored as encrypted in database)
 
             }else{//else if the login was unsuccessful
                 appTa.append("\nLogin failed, please try again.");
@@ -758,7 +750,7 @@ public class GUI extends javax.swing.JFrame {
             Path currentRelativePath = Paths.get("");
             String path = currentRelativePath.toAbsolutePath().toString();
             JOptionPane.showMessageDialog(null, "File saved to your device");
-            appTa.append("File (asymetricEncryptedFile.txt) was saved to your device on path: " + path);
+            appTa.append("\nFile (asymetricEncryptedFile.txt) was saved to your device on path: " + path);
         } catch (Exception e) {
             System.out.println("Error while encryption: " + e);
         }
@@ -816,14 +808,6 @@ public class GUI extends javax.swing.JFrame {
             }
         });
     }
-
-
-    
-    
-   
-    
-    
-  
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel acceptedFileExtentionNoteLbl;

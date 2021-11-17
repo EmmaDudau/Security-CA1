@@ -15,16 +15,16 @@ import java.security.NoSuchProviderException;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 
-/**
- *
- * @author Emanuela Dudau X19180675
+/*
+ * GenerateKeys.java
+ * 17th November 2021
+ * Security Fundamentals and Development CA1 Part 2
+ * Group F - Ruby Lennon (x19128355), Emanuela Dudau (x19180675)
+ * @authors: Emanuela Dudau (x19180675)
+ * Description -  Generate a Public-Private Key Pair There are several ways to generate a Public-Private Key Pair depending on your platform. 
+ * In this example, we will create a pair using Java. The Cryptographic Algorithm we will use in this example is RSA.
  */
 
-/**
- * Generate a Public-Private Key Pair There are several ways to generate a Public-Private Key Pair depending on your platform. 
- * In this example, we will create a pair using Java. The Cryptographic Algorithm we will use in this example is RSA.
- * @author Emanuela Dudau X19180675
- */
 public class GenerateKeys {
 
 	private KeyPairGenerator keyGen;
