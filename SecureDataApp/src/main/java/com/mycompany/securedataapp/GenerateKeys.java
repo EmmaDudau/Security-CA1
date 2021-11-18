@@ -5,6 +5,7 @@
  */
 package com.mycompany.securedataapp;
 
+//imports
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -24,6 +25,9 @@ import java.security.PublicKey;
  * Description -  Generate a Public-Private Key Pair There are several ways to generate a Public-Private Key Pair depending on your platform. 
  * In this example, we will create a pair using Java. The Cryptographic Algorithm we will use in this example is RSA.
  */
+
+//@Ref: https://mkyong.com/java/java-asymmetric-cryptography-example/
+//Tutorial on how to generate Public-Private Key Pair for asymmetric cryptography
 
 public class GenerateKeys {
 

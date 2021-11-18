@@ -31,6 +31,9 @@ import org.apache.commons.codec.binary.Base64;
  * Description - App GUI
  */
 
+//@Ref: https://mkyong.com/java/java-asymmetric-cryptography-example/
+//Tutorial on how to encrypt / decrypt using asymmetric cryptography
+
 public class AsymmetricEncryption {
     
 	private Cipher cipher;
