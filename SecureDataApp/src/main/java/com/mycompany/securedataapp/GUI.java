@@ -59,7 +59,7 @@ public class GUI extends javax.swing.JFrame {
         loginBtn = new javax.swing.JButton();
         createUserBtn = new javax.swing.JButton();
         printDetailsBtn = new javax.swing.JButton();
-        jPanel1 = new javax.swing.JPanel();
+        userDetailsPnl = new javax.swing.JPanel();
         usernameTf = new javax.swing.JTextField();
         passwordTf = new javax.swing.JTextField();
         ppsnTf = new javax.swing.JTextField();
@@ -67,18 +67,20 @@ public class GUI extends javax.swing.JFrame {
         passwordLbl = new javax.swing.JLabel();
         ppsnLbl = new javax.swing.JLabel();
         updatePPSNBtn = new javax.swing.JButton();
-        fileReaderWriterPnl = new javax.swing.JPanel();
+        symmetricEncryptPnl = new javax.swing.JPanel();
         filenameLbl = new javax.swing.JLabel();
         filenameTf = new javax.swing.JTextField();
         writeFileBtn = new javax.swing.JButton();
         readFileBtn = new javax.swing.JButton();
         textAreaDisplay = new java.awt.TextArea();
-        jLabel1 = new javax.swing.JLabel();
+        secreyKeyLbl = new javax.swing.JLabel();
         secretKey = new javax.swing.JTextField();
-        userDetailsPnl = new javax.swing.JPanel();
+        fileTextAreaLbl = new javax.swing.JLabel();
+        asymmetricEncryptPnl = new javax.swing.JPanel();
         asymmetricTextArea = new java.awt.TextArea();
         asymmetricBtnEncrypt = new javax.swing.JButton();
         asymmetricBtnDecrypt = new javax.swing.JButton();
+        fileTextAreaLbl2 = new javax.swing.JLabel();
         fileCheckerPnl = new javax.swing.JPanel();
         fileOnePnl = new javax.swing.JPanel();
         filenameOneTf = new javax.swing.JTextField();
@@ -88,7 +90,7 @@ public class GUI extends javax.swing.JFrame {
         filenameTwoTf = new javax.swing.JTextField();
         compareFilesBtn = new javax.swing.JButton();
         acceptedFileExtentionNoteLbl = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
+        noteLbl = new javax.swing.JLabel();
         exitApplicationBtn = new javax.swing.JButton();
         clearAppTaBtn = new javax.swing.JButton();
 
@@ -101,7 +103,7 @@ public class GUI extends javax.swing.JFrame {
 
         appTa.setColumns(20);
         appTa.setRows(5);
-        appTa.setBorder(javax.swing.BorderFactory.createTitledBorder("Message"));
+        appTa.setBorder(javax.swing.BorderFactory.createTitledBorder("App Message"));
         jScrollPane1.setViewportView(appTa);
         appTa.getAccessibleContext().setAccessibleDescription("");
 
@@ -126,7 +128,7 @@ public class GUI extends javax.swing.JFrame {
             }
         });
 
-        jPanel1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        userDetailsPnl.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
         usernameTf.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -146,38 +148,36 @@ public class GUI extends javax.swing.JFrame {
 
         ppsnLbl.setText("PPSN Number:");
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
+        javax.swing.GroupLayout userDetailsPnlLayout = new javax.swing.GroupLayout(userDetailsPnl);
+        userDetailsPnl.setLayout(userDetailsPnlLayout);
+        userDetailsPnlLayout.setHorizontalGroup(
+            userDetailsPnlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(userDetailsPnlLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGroup(userDetailsPnlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(usernameLbl)
                     .addComponent(passwordLbl)
                     .addComponent(ppsnLbl))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(passwordTf)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(ppsnTf, javax.swing.GroupLayout.PREFERRED_SIZE, 265, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(usernameTf))
+                .addGroup(userDetailsPnlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(passwordTf, javax.swing.GroupLayout.DEFAULT_SIZE, 290, Short.MAX_VALUE)
+                    .addComponent(usernameTf)
+                    .addComponent(ppsnTf))
                 .addContainerGap())
         );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
+        userDetailsPnlLayout.setVerticalGroup(
+            userDetailsPnlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(userDetailsPnlLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(userDetailsPnlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(usernameTf, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(usernameLbl))
                 .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(userDetailsPnlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(passwordTf, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(passwordLbl))
                 .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(userDetailsPnlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(ppsnTf, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(ppsnLbl))
                 .addGap(0, 13, Short.MAX_VALUE))
@@ -195,25 +195,28 @@ public class GUI extends javax.swing.JFrame {
         userLoginPnlLayout.setHorizontalGroup(
             userLoginPnlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, userLoginPnlLayout.createSequentialGroup()
-                .addContainerGap(224, Short.MAX_VALUE)
-                .addGroup(userLoginPnlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addContainerGap(231, Short.MAX_VALUE)
+                .addGroup(userLoginPnlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(userDetailsPnl, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(userLoginPnlLayout.createSequentialGroup()
-                        .addGroup(userLoginPnlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(loginBtn, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(updatePPSNBtn, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
                         .addGroup(userLoginPnlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(createUserBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(printDetailsBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGap(9, 9, 9))
-                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(223, 223, 223))
+                            .addComponent(loginBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(updatePPSNBtn, javax.swing.GroupLayout.DEFAULT_SIZE, 179, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(userLoginPnlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(userLoginPnlLayout.createSequentialGroup()
+                                .addGap(47, 47, 47)
+                                .addComponent(printDetailsBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, userLoginPnlLayout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(createUserBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                .addGap(234, 234, 234))
         );
         userLoginPnlLayout.setVerticalGroup(
             userLoginPnlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, userLoginPnlLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(userDetailsPnl, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(userLoginPnlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(createUserBtn)
@@ -227,7 +230,7 @@ public class GUI extends javax.swing.JFrame {
 
         applicationTp.addTab("User Details", userLoginPnl);
 
-        filenameLbl.setText("Filename:");
+        filenameLbl.setText("File to Decrypt:");
 
         filenameTf.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -242,59 +245,69 @@ public class GUI extends javax.swing.JFrame {
             }
         });
 
-        readFileBtn.setText("Decrypt");
+        readFileBtn.setText("Decrypt File");
         readFileBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 readFileBtnActionPerformed(evt);
             }
         });
 
-        jLabel1.setText("SecretKey");
+        textAreaDisplay.setName(""); // NOI18N
 
-        javax.swing.GroupLayout fileReaderWriterPnlLayout = new javax.swing.GroupLayout(fileReaderWriterPnl);
-        fileReaderWriterPnl.setLayout(fileReaderWriterPnlLayout);
-        fileReaderWriterPnlLayout.setHorizontalGroup(
-            fileReaderWriterPnlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(fileReaderWriterPnlLayout.createSequentialGroup()
+        secreyKeyLbl.setText("SecretKey:");
+
+        fileTextAreaLbl.setText("File text:");
+
+        javax.swing.GroupLayout symmetricEncryptPnlLayout = new javax.swing.GroupLayout(symmetricEncryptPnl);
+        symmetricEncryptPnl.setLayout(symmetricEncryptPnlLayout);
+        symmetricEncryptPnlLayout.setHorizontalGroup(
+            symmetricEncryptPnlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(symmetricEncryptPnlLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(fileReaderWriterPnlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(fileReaderWriterPnlLayout.createSequentialGroup()
-                        .addComponent(filenameLbl)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(filenameTf, javax.swing.GroupLayout.PREFERRED_SIZE, 229, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 111, Short.MAX_VALUE)
-                        .addComponent(jLabel1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(symmetricEncryptPnlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(symmetricEncryptPnlLayout.createSequentialGroup()
+                        .addComponent(secreyKeyLbl)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(secretKey, javax.swing.GroupLayout.PREFERRED_SIZE, 340, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(textAreaDisplay, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(fileReaderWriterPnlLayout.createSequentialGroup()
-                        .addGap(15, 15, 15)
-                        .addComponent(writeFileBtn)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(readFileBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(symmetricEncryptPnlLayout.createSequentialGroup()
+                        .addGroup(symmetricEncryptPnlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(symmetricEncryptPnlLayout.createSequentialGroup()
+                                .addComponent(fileTextAreaLbl)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addGroup(symmetricEncryptPnlLayout.createSequentialGroup()
+                                .addComponent(writeFileBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 97, Short.MAX_VALUE)
+                                .addComponent(filenameLbl)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(filenameTf, javax.swing.GroupLayout.PREFERRED_SIZE, 318, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(20, 20, 20)))
+                        .addComponent(readFileBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
-        fileReaderWriterPnlLayout.setVerticalGroup(
-            fileReaderWriterPnlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(fileReaderWriterPnlLayout.createSequentialGroup()
+        symmetricEncryptPnlLayout.setVerticalGroup(
+            symmetricEncryptPnlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(symmetricEncryptPnlLayout.createSequentialGroup()
                 .addGap(13, 13, 13)
-                .addGroup(fileReaderWriterPnlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(filenameTf, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(filenameLbl)
-                    .addComponent(jLabel1)
+                .addGroup(symmetricEncryptPnlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(secreyKeyLbl)
                     .addComponent(secretKey, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(fileTextAreaLbl)
+                .addGap(1, 1, 1)
+                .addComponent(textAreaDisplay, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(textAreaDisplay, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(fileReaderWriterPnlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(symmetricEncryptPnlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(writeFileBtn)
-                    .addComponent(readFileBtn))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(readFileBtn)
+                    .addComponent(filenameLbl)
+                    .addComponent(filenameTf, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(21, Short.MAX_VALUE))
         );
 
-        applicationTp.addTab("Symmetric Encryption", fileReaderWriterPnl);
+        applicationTp.addTab("Symmetric Encryption", symmetricEncryptPnl);
 
-        userDetailsPnl.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        asymmetricEncryptPnl.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
         asymmetricBtnEncrypt.setText("Encrypt");
         asymmetricBtnEncrypt.addActionListener(new java.awt.event.ActionListener() {
@@ -310,33 +323,43 @@ public class GUI extends javax.swing.JFrame {
             }
         });
 
-        javax.swing.GroupLayout userDetailsPnlLayout = new javax.swing.GroupLayout(userDetailsPnl);
-        userDetailsPnl.setLayout(userDetailsPnlLayout);
-        userDetailsPnlLayout.setHorizontalGroup(
-            userDetailsPnlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(userDetailsPnlLayout.createSequentialGroup()
-                .addGap(24, 24, 24)
-                .addGroup(userDetailsPnlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(userDetailsPnlLayout.createSequentialGroup()
-                        .addComponent(asymmetricBtnEncrypt)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(asymmetricBtnDecrypt))
-                    .addComponent(asymmetricTextArea, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 806, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(43, Short.MAX_VALUE))
+        fileTextAreaLbl2.setText("File text:");
+
+        javax.swing.GroupLayout asymmetricEncryptPnlLayout = new javax.swing.GroupLayout(asymmetricEncryptPnl);
+        asymmetricEncryptPnl.setLayout(asymmetricEncryptPnlLayout);
+        asymmetricEncryptPnlLayout.setHorizontalGroup(
+            asymmetricEncryptPnlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(asymmetricEncryptPnlLayout.createSequentialGroup()
+                .addGroup(asymmetricEncryptPnlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(asymmetricEncryptPnlLayout.createSequentialGroup()
+                        .addGap(24, 24, 24)
+                        .addComponent(fileTextAreaLbl2)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, asymmetricEncryptPnlLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(asymmetricTextArea, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(asymmetricEncryptPnlLayout.createSequentialGroup()
+                        .addGap(0, 12, Short.MAX_VALUE)
+                        .addComponent(asymmetricBtnEncrypt, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 589, Short.MAX_VALUE)
+                        .addComponent(asymmetricBtnDecrypt, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap())
         );
-        userDetailsPnlLayout.setVerticalGroup(
-            userDetailsPnlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, userDetailsPnlLayout.createSequentialGroup()
-                .addContainerGap(56, Short.MAX_VALUE)
-                .addComponent(asymmetricTextArea, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(49, 49, 49)
-                .addGroup(userDetailsPnlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+        asymmetricEncryptPnlLayout.setVerticalGroup(
+            asymmetricEncryptPnlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, asymmetricEncryptPnlLayout.createSequentialGroup()
+                .addContainerGap(24, Short.MAX_VALUE)
+                .addComponent(fileTextAreaLbl2)
+                .addGap(1, 1, 1)
+                .addComponent(asymmetricTextArea, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(19, 19, 19)
+                .addGroup(asymmetricEncryptPnlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(asymmetricBtnEncrypt)
                     .addComponent(asymmetricBtnDecrypt))
                 .addContainerGap())
         );
 
-        applicationTp.addTab("Asymmetric Encryption", userDetailsPnl);
+        applicationTp.addTab("Asymmetric Encryption", asymmetricEncryptPnl);
 
         fileOnePnl.setBorder(javax.swing.BorderFactory.createTitledBorder("File One"));
         fileOnePnl.setPreferredSize(new java.awt.Dimension(310, 150));
@@ -352,7 +375,7 @@ public class GUI extends javax.swing.JFrame {
                 .addComponent(filenameOneLbl)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(filenameOneTf, javax.swing.GroupLayout.PREFERRED_SIZE, 257, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(23, Short.MAX_VALUE))
         );
         fileOnePnlLayout.setVerticalGroup(
             fileOnePnlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -361,7 +384,7 @@ public class GUI extends javax.swing.JFrame {
                 .addGroup(fileOnePnlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(filenameOneLbl)
                     .addComponent(filenameOneTf, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(50, Short.MAX_VALUE))
+                .addContainerGap(58, Short.MAX_VALUE))
         );
 
         fileTwoPnl.setBorder(javax.swing.BorderFactory.createTitledBorder("File Two"));
@@ -384,7 +407,7 @@ public class GUI extends javax.swing.JFrame {
                 .addComponent(filenameTwoLbl)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(filenameTwoTf, javax.swing.GroupLayout.PREFERRED_SIZE, 277, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(55, Short.MAX_VALUE))
         );
         fileTwoPnlLayout.setVerticalGroup(
             fileTwoPnlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -393,10 +416,10 @@ public class GUI extends javax.swing.JFrame {
                 .addGroup(fileTwoPnlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(filenameTwoTf, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(filenameTwoLbl))
-                .addContainerGap(65, Short.MAX_VALUE))
+                .addContainerGap(61, Short.MAX_VALUE))
         );
 
-        compareFilesBtn.setText("Compare Files");
+        compareFilesBtn.setText("Compare Text Files");
         compareFilesBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 compareFilesBtnActionPerformed(evt);
@@ -406,7 +429,7 @@ public class GUI extends javax.swing.JFrame {
         acceptedFileExtentionNoteLbl.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         acceptedFileExtentionNoteLbl.setText("Accepted file extension: txt");
 
-        jLabel2.setText("Note: files must be located in NetBeans project folder to compare");
+        noteLbl.setText("Note: files must be located in NetBeans project folder to compare");
 
         javax.swing.GroupLayout fileCheckerPnlLayout = new javax.swing.GroupLayout(fileCheckerPnl);
         fileCheckerPnl.setLayout(fileCheckerPnlLayout);
@@ -415,19 +438,21 @@ public class GUI extends javax.swing.JFrame {
             .addGroup(fileCheckerPnlLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(fileCheckerPnlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, fileCheckerPnlLayout.createSequentialGroup()
-                        .addComponent(acceptedFileExtentionNoteLbl)
-                        .addGap(173, 173, 173)
-                        .addComponent(compareFilesBtn)
-                        .addContainerGap(378, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, fileCheckerPnlLayout.createSequentialGroup()
-                        .addComponent(fileOnePnl, javax.swing.GroupLayout.DEFAULT_SIZE, 419, Short.MAX_VALUE)
-                        .addGap(34, 34, 34)
-                        .addComponent(fileTwoPnl, javax.swing.GroupLayout.PREFERRED_SIZE, 384, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(25, 25, 25))
                     .addGroup(fileCheckerPnlLayout.createSequentialGroup()
-                        .addComponent(jLabel2)
-                        .addGap(0, 0, Short.MAX_VALUE))))
+                        .addComponent(noteLbl)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, fileCheckerPnlLayout.createSequentialGroup()
+                        .addGroup(fileCheckerPnlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(fileCheckerPnlLayout.createSequentialGroup()
+                                .addComponent(acceptedFileExtentionNoteLbl)
+                                .addGap(173, 173, 173)
+                                .addComponent(compareFilesBtn)
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addGroup(fileCheckerPnlLayout.createSequentialGroup()
+                                .addComponent(fileOnePnl, javax.swing.GroupLayout.PREFERRED_SIZE, 373, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 51, Short.MAX_VALUE)
+                                .addComponent(fileTwoPnl, javax.swing.GroupLayout.PREFERRED_SIZE, 431, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addContainerGap())))
         );
         fileCheckerPnlLayout.setVerticalGroup(
             fileCheckerPnlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -441,7 +466,7 @@ public class GUI extends javax.swing.JFrame {
                     .addComponent(compareFilesBtn)
                     .addComponent(acceptedFileExtentionNoteLbl, javax.swing.GroupLayout.Alignment.TRAILING))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel2)
+                .addComponent(noteLbl)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -475,21 +500,21 @@ public class GUI extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGap(255, 255, 255)
                         .addComponent(clearAppTaBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
+                        .addGap(59, 59, 59)
                         .addComponent(exitApplicationBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
             .addGroup(layout.createSequentialGroup()
-                .addGap(331, 331, 331)
+                .addGap(357, 357, 357)
                 .addComponent(titleLbl)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap()
                 .addComponent(titleLbl)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
                 .addComponent(applicationTp, javax.swing.GroupLayout.PREFERRED_SIZE, 260, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 262, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -815,6 +840,7 @@ public class GUI extends javax.swing.JFrame {
     private javax.swing.JTabbedPane applicationTp;
     private javax.swing.JButton asymmetricBtnDecrypt;
     private javax.swing.JButton asymmetricBtnEncrypt;
+    private javax.swing.JPanel asymmetricEncryptPnl;
     private java.awt.TextArea asymmetricTextArea;
     private javax.swing.JButton clearAppTaBtn;
     private javax.swing.JButton compareFilesBtn;
@@ -822,7 +848,8 @@ public class GUI extends javax.swing.JFrame {
     private javax.swing.JButton exitApplicationBtn;
     private javax.swing.JPanel fileCheckerPnl;
     private javax.swing.JPanel fileOnePnl;
-    private javax.swing.JPanel fileReaderWriterPnl;
+    private javax.swing.JLabel fileTextAreaLbl;
+    private javax.swing.JLabel fileTextAreaLbl2;
     private javax.swing.JPanel fileTwoPnl;
     private javax.swing.JLabel filenameLbl;
     private javax.swing.JLabel filenameOneLbl;
@@ -830,12 +857,10 @@ public class GUI extends javax.swing.JFrame {
     private javax.swing.JTextField filenameTf;
     private javax.swing.JLabel filenameTwoLbl;
     private javax.swing.JTextField filenameTwoTf;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JButton loginBtn;
+    private javax.swing.JLabel noteLbl;
     private javax.swing.JLabel passwordLbl;
     private javax.swing.JTextField passwordTf;
     private javax.swing.JLabel ppsnLbl;
@@ -843,6 +868,8 @@ public class GUI extends javax.swing.JFrame {
     private javax.swing.JButton printDetailsBtn;
     private javax.swing.JButton readFileBtn;
     private javax.swing.JTextField secretKey;
+    private javax.swing.JLabel secreyKeyLbl;
+    private javax.swing.JPanel symmetricEncryptPnl;
     private java.awt.TextArea textAreaDisplay;
     private javax.swing.JLabel titleLbl;
     private javax.swing.JButton updatePPSNBtn;
