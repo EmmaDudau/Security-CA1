@@ -77,12 +77,13 @@ public class Utils {
         return encryptedPassword;//return encryptedPassword
 
     }
-
+    
+    //To run below code create userstore datbase using userstore.sql schema, once created, update code below with localhost username and password
     //method to create a new user in the database
     public static String CreateUser(String username, String password){
         try{
             String returnStatement;//string to restore method return statement
-            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/userstore", "root", "RLNCIsqlPass123*");//connect to userstore schema/database on localhost
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/userstore", "root", "password");//connect to userstore schema/database on localhost
             String sql = "INSERT INTO users (user_name, password) VALUES (?, ?)";//SQL statement to create new user in users table
             PreparedStatement statement = con.prepareStatement(sql);//prepared statement is more secure than plain statement against SQL injection
             statement.setString(1, username);//set the first statement parameter (?) to the username value
@@ -100,12 +101,13 @@ public class Utils {
             return sqlError;//return the SQL error
         }
     }
-
+    
+    //To run below code create userstore datbase using userstore.sql schema, once created, update code below with localhost username and password
     //method to check if a user exists in the database using username and password
     public static String CheckUser(String username, String password){
         try{
             String returnStatement;//string to restore method return statement
-            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/userstore", "root", "RLNCIsqlPass123*");//connect to userstore schema/database on localhost
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/userstore", "root", "password*");//connect to userstore schema/database on localhost
             String sql = "SELECT * FROM users where user_name = ? and password = ?";//SQL statement
             PreparedStatement statement = con.prepareStatement(sql);//prepared statement is more secure than plain statement against SQL injection
             statement.setString(1, username);//set the first statement parameter (?) to the username value
@@ -129,11 +131,12 @@ public class Utils {
         }
     }
     
+    //To run below code create userstore datbase using userstore.sql schema, once created, update code below with localhost username and password
     //method to check if a user exists in the database
     public static String GetUserDetails(String username, String password){
         try{
             String returnStatement;//string to restore method return statement
-            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/userstore", "root", "RLNCIsqlPass123*");//connect to userstore schema/database on localhost
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/userstore", "root", "password");//connect to userstore schema/database on localhost
             String sql = "SELECT * FROM users WHERE user_name=? AND password=?";//SQL statement
             PreparedStatement statement = con.prepareStatement(sql);//prepared statement is more secure than plain statement against SQL injection
             statement.setString(1, username);//set the first statement parameter (?) to the username value
@@ -158,11 +161,12 @@ public class Utils {
         }
     }
     
+    //To run below code create userstore datbase using userstore.sql schema, once created, update code below with localhost username and password
     //method to update user ppsn number in users table in userstore database
     public static String UpdatePPSN(String username, String password, String ppsn){
         try{
             String returnStatement;//string to restore method return statement
-            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/userstore", "root", "RLNCIsqlPass123*");//connect to userstore schema/database on localhost
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/userstore", "root", "password");//connect to userstore schema/database on localhost
             String sql = "UPDATE users SET PPSN=? WHERE user_name=? and password=?";//SQL statement to update PPSN for specified user in the users table
             PreparedStatement statement = con.prepareStatement(sql);//prepared statement is more secure than plain statement against SQL injection
             statement.setString(1, ppsn);//set the first statement parameter (?) to the ppsn value

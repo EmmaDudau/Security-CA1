@@ -207,9 +207,7 @@ public class GUI extends javax.swing.JFrame {
                             .addGroup(userLoginPnlLayout.createSequentialGroup()
                                 .addGap(47, 47, 47)
                                 .addComponent(printDetailsBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, userLoginPnlLayout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(createUserBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                            .addComponent(createUserBtn, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addGap(234, 234, 234))
         );
         userLoginPnlLayout.setVerticalGroup(
@@ -427,7 +425,7 @@ public class GUI extends javax.swing.JFrame {
         });
 
         acceptedFileExtentionNoteLbl.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        acceptedFileExtentionNoteLbl.setText("Accepted file extension: txt");
+        acceptedFileExtentionNoteLbl.setText("Accepted file extension: txt e.g. Test.txt");
 
         noteLbl.setText("Note: files must be located in NetBeans project folder to compare");
 
@@ -445,7 +443,7 @@ public class GUI extends javax.swing.JFrame {
                         .addGroup(fileCheckerPnlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(fileCheckerPnlLayout.createSequentialGroup()
                                 .addComponent(acceptedFileExtentionNoteLbl)
-                                .addGap(173, 173, 173)
+                                .addGap(106, 106, 106)
                                 .addComponent(compareFilesBtn)
                                 .addGap(0, 0, Short.MAX_VALUE))
                             .addGroup(fileCheckerPnlLayout.createSequentialGroup()
