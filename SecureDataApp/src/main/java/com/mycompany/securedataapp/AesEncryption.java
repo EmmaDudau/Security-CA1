@@ -18,7 +18,7 @@ import javax.crypto.spec.SecretKeySpec;
  * AesEncryption.java
  * 14th November 2021
  * Security Fundamentals and Development CA1 Part 2
- * @authors: Group F - Ruby Lennon (x19128355), Emanuela Dudau (x19180675)
+ * Group F - Ruby Lennon (x19128355), Emanuela Dudau (x19180675)
  * Description - AES Encryption/Decryption class.
  */
 
